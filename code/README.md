@@ -17,7 +17,7 @@ pytest                                        # run all tests
 
 Linux CPU alternative: `python -m pip install -r requirements/linux-cpu-lock.txt && python -m pip install --no-deps -e .`
 
-## Part 1 entry points
+## Entry points by chapter
 
 | Chapter | Command |
 |---|---|
@@ -28,6 +28,10 @@ Linux CPU alternative: `python -m pip install -r requirements/linux-cpu-lock.txt
 | 5 | `python -m scripts.ch05_untrained_network` |
 | 6 | `python -m scripts.ch06_train_band` and `python -m scripts.ch06_learning_rates` |
 | 7 | `python -m scripts.ch07_train_char_model` (add `--set overfit_one_batch=true` for the debugging mode) |
+| 8 | `python -m scripts.ch08_compare_units` |
+| 9 | `python -m scripts.ch09_build_corpus`, `python -m scripts.ch09_train_bpe`, `python -m scripts.ch09_compare_tokenizers` (Project 1: `projects/p1_tokenizer/`) |
+| 10 | `python -m scripts.ch10_train_embedding_model` |
+| 11 | `python -m scripts.ch11_build_batches` |
 
 Teaching examples live in `examples/chNN/` (run with `python examples/chNN/<name>.py`); exercise solutions in `solutions/` (run with `python -m solutions.<name>`).
 

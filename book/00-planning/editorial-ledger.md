@@ -4,7 +4,7 @@
 
 The ledger is the book's source of truth for what has been delivered, what depends on what, and what must be revisited. Update it with every chapter.
 
-**Last updated:** 2026-10-02, after Chapter 10.
+**Last updated:** 2026-10-03, after Chapter 11 (Part 2 complete).
 
 ### 1. Completed chapters and outstanding sections
 
@@ -22,7 +22,9 @@ The ledger is the book's source of truth for what has been delivered, what depen
 | 8 Text, Unicode, bytes, tokens | Done | Sections 8.1–8.9, 6 exercises with answers |
 | 9 Byte-pair encoding (Project 1) | Done | Sections 9.1–9.11 incl. project review; 6 exercises with answers |
 | 10 Embeddings and position | Done | Sections 10.1–10.9 (10.5 retitled), 6 exercises with answers |
-| 11–45 | Not started | Next: Chapter 11 |
+| 11 Sequences, batches, targets | Done | Sections 11.1–11.10 (11.9 retitled; 11.10 added), 6 exercises with answers |
+| **Part 2** | **Complete** | Chapters 8–11 |
+| 12–45 | Not started | Next: Chapter 12 (Part 3) |
 | Appendices A–G | Not started | The glossary will be seeded from the ledger's concept table |
 
 ### 2. Concepts introduced
@@ -164,6 +166,16 @@ Only concepts that have been *delivered* are listed. Planned locations are in th
 | Bag of tokens; order loss measured | 10.6 | 65.1% vs 71.0% | Ch 13 |
 | Learned positional embeddings; averaging trap; limits | 10.7 | 72.2% | Ch 15.7, 43.4 |
 | Sinusoidal, RoPE, relative positions (preview) | 10.8 | Named | Ch 15.7 |
+| Window; context length (training); T+1 tokens for T predictions | 11.2 | Every position trains | Ch 13, 19 |
+| Shift by one; off-by-one variants and their test | 11.3 | Distinct-ID test | Ch 20 |
+| Stride; overlap trade-off | 11.4 | — | — |
+| Tokens per batch | 11.5 | — | Ch 19.8 |
+| Padding; pad token; attention mask; ignore index (-100); left vs right padding | 11.6 | Loss equality proven | Ch 13.7, 17, 26, 27 |
+| Flattening logits/targets for per-position cross-entropy | 11.6, 11.9 | `reshape(-1, V)` | Ch 19 |
+| Packing; separator token; document IDs; cross-document context trade-off | 11.7 | 0% waste vs 46% (40 sentences) | Ch 13.7, 27.6 |
+| Bucketing by length | 11.7 | Exercise 4 | Ch 27 |
+| Dataset / DataLoader / TensorDataset; drop_last; num_workers (named) | 11.8 | Seeded generator | Ch 19 |
+| Bigram model (per-position predictions) | 11.9 | Val loss 1.46 | Ch 16 |
 
 ### 3. Prerequisites and unresolved dependencies
 
@@ -234,6 +246,12 @@ Only concepts that have been *delivered* are listed. Planned locations are in th
 | `code/examples/ch10/*.py` | Ch 10 | Executed | 4 programs |
 | `code/solutions/ch10_average_first.py` | Ch 10 | Tested, executed | `AverageFirstModel` |
 | `code/tests/test_embeddings.py` | Ch 10 | 13 tests pass | — |
+| `code/llmfp/data/__init__.py`, `windows.py`, `collate.py` | Ch 11 | Tested | `TokenWindowDataset`, `IGNORE_INDEX`, `PaddedBatch`, `pad_batch`, `pack_documents` |
+| `code/llmfp/model/bigram.py` | Ch 11 | Tested | `BigramModel(vocab_size)` |
+| `code/scripts/ch11_build_batches.py` | Ch 11 | Executed | `BatchConfig`; `configs/batches-cpu.toml` |
+| `code/examples/ch11/*.py` | Ch 11 | Executed | 5 programs |
+| `code/solutions/ch11_bucketing.py` | Ch 11 | Tested, executed | `bucketed_batches`, `random_batches`, `padding_waste` |
+| `code/tests/test_data.py` | Ch 11 | 17 tests pass | — |
 | `code/llmfp/counting_lm.py` | Ch 1 | Tested | `START`, `END`, `CountingModelConfig`, `GenerationResult`, `split_into_words`, `join_words`, `rank_followers`, `CountingLanguageModel` (`train`, `context_for`, `followers_for`, `next_word_candidates`, `generate`, `num_parameters`, `num_contexts`, `vocabulary`, `save`, `load`), `read_lines` |
 | `code/scripts/__init__.py` | Ch 1 | — | Makes `scripts` importable as a package |
 | `code/scripts/ch01_counting_demo.py` | Ch 1 | Executed | CLI: `--data --context-size --prompt --samples --max-new-words --seed --checkpoint` |
@@ -316,6 +334,9 @@ Note: Chapter 1 code was written to need only Python 3.10+ features, but it was 
 | Ch 10 Exercise 4 claim | One-off measurement | Seen rows 5.64 to 5.98, unseen 5.61 to 5.48; quoted | 2026-10-02 |
 | Ch 10 design error found and fixed during writing | bag_position originally averaged first | Kept as Exercise 5 with a guard test | 2026-10-02 |
 | Audit of Ch 1–10 | `python3 tools/audit_chapters.py` | ok | 2026-10-02 |
+| Ch 11 full test suite | `pytest` | 208 passed | 2026-10-03 |
+| Ch 11 design fix during writing | pack_documents windows now share one token (like default stride) | Test pins it | 2026-10-03 |
+| Audit of Ch 1–11 | `python3 tools/audit_chapters.py` | ok | 2026-10-03 |
 
 ### 7. Teaching simplifications to revisit
 
@@ -353,6 +374,9 @@ Note: Chapter 1 code was written to need only Python 3.10+ features, but it was 
 | Tokenizer corpus is small and English-only | 9.8 | Ch 18 (real dataset) |
 | Embedding MLP with fixed context (no attention) | 10.5 | Part 3 |
 | Most of the 2048-row vocabulary unused by harbor data | 10.5 | Ch 18 (tokenizer trained on pretraining data) |
+| Each harbor sentence treated as a document | 11.7 | Ch 18 (real documents) |
+| Cross-document attention in packed windows not yet masked | 11.7 | Ch 13.7 |
+| `num_workers`, streaming datasets mentioned only | 11.8 | Ch 19 |
 | Model checkpoint without optimizer/RNG state | 7.8 | Ch 19.9 |
 
 ### 8. Open questions and decisions

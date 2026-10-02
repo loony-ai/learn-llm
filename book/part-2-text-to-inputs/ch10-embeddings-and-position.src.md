@@ -1,6 +1,6 @@
 ## Chapter 10: Embeddings and Position
 
-[Back to index](../../README.md) · Previous: [Chapter 9](ch09-byte-pair-encoding.md) · Next: Chapter 11 (planned)
+[Back to index](../../README.md) · Previous: [Chapter 9](ch09-byte-pair-encoding.md) · Next: [Chapter 11](ch11-sequences-batches-targets.md)
 
 A tokenizer turns text into token IDs. A network needs numbers it can compute with. Chapter 7 bridged the gap with one-hot vectors, and section 7.4 listed their costs: they grow with the vocabulary, they share nothing between related tokens, and they are expensive. Every modern language model uses a different bridge, the **embedding table**: a learned list of numbers for each token. This chapter builds embeddings, trains them, looks at what they learn (honestly, including where they learn less than you might hope), and then addresses a problem that embeddings alone do not solve: **word order**.
 
@@ -339,4 +339,4 @@ You can now:
 - Demonstrate, with a measurement, what a model loses without word order.
 - Add learned positional embeddings correctly, avoid the averaging trap, and state their limits.
 
-**Next:** Chapter 11 turns a stream of token IDs into training batches for a transformer: context windows, the input/target shift, padding, masks, packing, and PyTorch's `DataLoader`.
+**Next:** [Chapter 11](ch11-sequences-batches-targets.md) turns a stream of token IDs into training batches for a transformer: context windows, the input/target shift, padding, masks, packing, and PyTorch's `DataLoader`.

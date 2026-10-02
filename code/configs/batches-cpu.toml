@@ -1,0 +1,11 @@
+# Chapter 11: build packed training batches and train a bigram model on them.
+runs_root = "runs"
+run_name = "ch11-batches"
+data = "data/tiny/harbor_synth.txt"
+tokenizer = "data/tokenizer/harbor-bpe-2048.json"
+separator = "<|endoftext|>"
+seed = 0
+context_length = 32
+batch_size = 16
+learning_rate = 0.05
+epochs = 15

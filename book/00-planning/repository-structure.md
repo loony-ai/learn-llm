@@ -59,14 +59,16 @@ code/
 │   │   ├── char.py, byte.py       #   Ch 8  CharTokenizer (with <unk> = 0), ByteTokenizer (256 IDs)
 │   │   └── bpe.py                 #   Ch 9  BPETokenizer.train/encode(allowed_special=)/decode/token_text; train_merges (+ reference)
 │   ├── data/                      # Ch 11, 18
-│   │   ├── windows.py             #   sliding-window next-token dataset
-│   │   ├── collate.py             #   padding, masks, packing
+│   │   ├── __init__.py            #   Ch 11 exports
+│   │   ├── windows.py             #   Ch 11 TokenWindowDataset(ids, context_length, stride=None)
+│   │   ├── collate.py             #   Ch 11 IGNORE_INDEX, pad_batch -> PaddedBatch, pack_documents
 │   │   └── pipeline.py            #   download → clean → dedup → split → tokenize → shard
 │   ├── model/                     # Ch 10, 12-17
 │   │   ├── config.py              #   GPTConfig
 │   │   ├── __init__.py            #   Ch 10
 │   │   ├── embeddings.py          #   Ch 10 TokenAndPositionEmbedding, cosine_similarity_matrix, nearest_neighbors
 │   │   ├── embedding_mlp.py       #   Ch 10 EmbeddingMLP (concat / bag / bag_position)
+│   │   ├── bigram.py              #   Ch 11 BigramModel: (B, T) -> (B, T, vocab)
 │   │   ├── attention.py           #   single-head, causal, multi-head attention
 │   │   ├── layers.py              #   feed-forward, LayerNorm/RMSNorm
 │   │   ├── positions.py           #   rotary positional embeddings
@@ -106,7 +108,8 @@ code/
 │   ├── ch09_build_corpus.py       # Ch 9  fixed tokenizer corpus (harbor + Part 1 sources + code)
 │   ├── ch09_train_bpe.py          # Ch 9  train + save the Project 1 tokenizer
 │   ├── ch09_compare_tokenizers.py # Ch 9  ours vs GPT-2 (pinned revision) vs bytes
-│   └── ch10_train_embedding_model.py # Ch 10 three ways to combine embeddings; role similarity
+│   ├── ch10_train_embedding_model.py # Ch 10 three ways to combine embeddings; role similarity
+│   └── ch11_build_batches.py      # Ch 11 text -> packed windows -> DataLoader -> bigram training
 ├── tests/                         # pytest-compatible tests, mirroring llmfp/
 │   ├── test_counting_lm.py        # Ch 1
 │   ├── test_ch01_solutions.py     # Ch 1 exercise solutions
@@ -123,7 +126,8 @@ code/
 │   ├── __init__.py                # Ch 9  makes tests importable as a package (shared fixtures)
 │   ├── test_tokenizers.py         # Ch 8
 │   ├── test_bpe.py                # Ch 9
-│   └── test_embeddings.py         # Ch 10 (+ Ch 10 solution)
+│   ├── test_embeddings.py         # Ch 10 (+ Ch 10 solution)
+│   └── test_data.py               # Ch 11 (+ Ch 11 solution)
 ├── solutions/                     # Suggested exercise solutions: chNN_<exercise>.py
 │   ├── ch01_backoff.py            # Ch 1, Exercise 5
 │   ├── ch01_memorization.py       # Ch 1, Exercise 6
@@ -138,7 +142,8 @@ code/
 │   ├── ch07_off_by_one.py         # Ch 7, Exercise 4
 │   ├── ch07_fact_check.py         # Ch 7, Exercise 5
 │   ├── ch09_vocab_sweep.py        # Ch 9, Exercise 3
-│   └── ch10_average_first.py      # Ch 10, Exercise 5
+│   ├── ch10_average_first.py      # Ch 10, Exercise 5
+│   └── ch11_bucketing.py          # Ch 11, Exercise 4
 ├── examples/                      # Small standalone teaching programs: examples/chNN/*.py
 │   ├── ch02/                      # Ch 2  collections, functions, classes, generators, files, pytest failure demo
 │   ├── ch03/                      # Ch 3  arrays, shapes, dtypes, indexing, reshaping, broadcasting, reductions, batching
@@ -147,14 +152,16 @@ code/
 │   ├── ch06/                      # Ch 6  cross-entropy, nudging, autograd, optimizers, accumulation, modes
 │   ├── ch08/                      # Ch 8  Unicode, UTF-8 bytes, normalization
 │   ├── ch09/                      # Ch 9  BPE by hand
-│   └── ch10/                      # Ch 10 IDs as labels, lookup, cosine, bag of tokens
+│   ├── ch10/                      # Ch 10 IDs as labels, lookup, cosine, bag of tokens
+│   └── ch11/                      # Ch 11 shift, stride, padding/masks, packing, DataLoader
 ├── configs/                       # TOML experiment configs (<purpose>-cpu.toml, <purpose>-gpu.toml)
 │   ├── counting-cpu.toml          # Ch 2
 │   ├── counting-eval-cpu.toml     # Ch 4
 │   ├── band-cpu.toml              # Ch 6
 │   ├── char-model-cpu.toml        # Ch 7
 │   ├── bpe-cpu.toml               # Ch 9
-│   └── embedding-mlp-cpu.toml     # Ch 10
+│   ├── embedding-mlp-cpu.toml     # Ch 10
+│   └── batches-cpu.toml           # Ch 11
 ├── data/
 │   ├── tiny/harbor.txt            # Ch 1: 40 original sentences (written for this book)
 │   ├── tiny/harbor_synth.txt      # Ch 4: 3000 generated sentences, 1024 distinct (seed 0)
@@ -188,6 +195,7 @@ These signatures are promises. A later chapter may *add* parameters with default
 | `Tokenizer` (abstract base class) | Ch 8 | `.encode(text) -> list[int]`, `.decode(ids) -> str`, `.vocab_size`, `.to_dict()`, `.from_dict(data)`, `.round_trips(text)`; files via `save_tokenizer(tok, path)` / `load_tokenizer(path)` (correction: the plan said `.save`/`.load` methods; module functions with a registry were chosen instead) |
 | BPE tokenizer | Ch 9 | `BPETokenizer.train(text, vocab_size, special_tokens=(), pattern=PATTERN, min_count=2)`; `.encode(text, *, allowed_special=())`; `.special_tokens` dict; `.token_text(id)` |
 | Embeddings | Ch 10 | `TokenAndPositionEmbedding(vocab_size, context_length, d_model)`: `(B, T) -> (B, T, d_model)`, error if T > context_length |
+| Data path | Ch 11 | `TokenWindowDataset(ids, T, stride)[i] -> (inputs (T,), targets (T,))`; `pad_batch(seqs, pad_id, side) -> PaddedBatch(input_ids, targets, attention_mask)`; `pack_documents(docs, T, separator_id) -> (windows (N, T+1), document_ids)`; loss = `cross_entropy(logits.reshape(-1, V), targets.reshape(-1))` |
 | `GPTConfig` | Ch 12 | dataclass: `vocab_size, context_length, d_model, n_heads, n_layers, dropout, ...` |
 | `GPT.forward` | Ch 16 | `(token_ids[B, T], attention_mask=None, kv_cache=None) -> logits[B, T, vocab_size]` |
 | `generate` | Ch 17 | `generate(model, token_ids, max_new_tokens, decoding=DecodingConfig(), stop_ids=())` |

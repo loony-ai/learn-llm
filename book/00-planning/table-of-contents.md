@@ -165,7 +165,7 @@ File: [ch10-embeddings-and-position.md](../part-2-text-to-inputs/ch10-embeddings
 - 10.9 Common mistakes, recap, concept checks, exercises, answers, checkpoint
 
 #### Chapter 11: Sequences, Batches, and Next-Token Targets
-Code: `code/llmfp/data/windows.py`, `code/llmfp/data/collate.py`
+File: [ch11-sequences-batches-targets.md](../part-2-text-to-inputs/ch11-sequences-batches-targets.md) · Code: `code/llmfp/data/windows.py`, `collate.py`, `code/llmfp/model/bigram.py`, `code/scripts/ch11_build_batches.py`
 
 - 11.1 The problem: one long text must become many same-shaped examples
 - 11.2 Context windows and context length
@@ -175,7 +175,8 @@ Code: `code/llmfp/data/windows.py`, `code/llmfp/data/collate.py`
 - 11.6 Variable lengths: padding, masks, and ignored target positions
 - 11.7 Packing several documents into one sequence; document boundaries
 - 11.8 PyTorch `Dataset` and `DataLoader`
-- 11.9 Milestone: a tested data module
+- 11.9 Milestone: a tested data path, and a model that predicts at every position
+- 11.10 Common mistakes, recap, concept checks, exercises, answers, checkpoint
 
 ---
 
