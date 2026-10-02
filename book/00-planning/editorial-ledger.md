@@ -4,7 +4,7 @@
 
 The ledger is the book's source of truth for what has been delivered, what depends on what, and what must be revisited. Update it with every chapter.
 
-**Last updated:** 2026-10-02, after Chapter 2.
+**Last updated:** 2026-10-02, after Chapter 3.
 
 ### 1. Completed chapters and outstanding sections
 
@@ -13,7 +13,8 @@ The ledger is the book's source of truth for what has been delivered, what depen
 | Planning materials | Done | Learning journey, contents, prerequisite map, repository structure, capstone map, hardware paths, coverage audit, this ledger |
 | 1 What a language model is and what it predicts | Done | All 15 sections, exercises, and answers |
 | 2 Python foundations and your working environment | Done | Sections 2.1–2.13 (2.13 added for recap/exercises), 6 exercises with answers |
-| 3–45 | Not started | Next: Chapter 3 |
+| 3 Tensors | Done | Sections 3.1–3.14 (3.14 added for recap/exercises), 6 exercises with answers |
+| 4–45 | Not started | Next: Chapter 4 |
 | Appendices A–G | Not started | The glossary will be seeded from the ledger's concept table |
 
 ### 2. Concepts introduced
@@ -72,6 +73,20 @@ Only concepts that have been *delivered* are listed. Planned locations are in th
 | Logging levels; print vs log | 2.9 | Used in `ch02_train_counting` | Ch 41.2–41.3 |
 | pytest: discovery, assert introspection, fixtures, parametrize, raises, selection | 2.10 | — | Ch 16.8 (model fixtures) |
 | Exit status | 2.12 | 0 = success convention | Ch 38.5 (CI) |
+| Array / tensor; element | 3.2 | Why arrays beat lists (observed 17x on test machine) | — |
+| Shape, dimension, axis; scalar/vector/matrix | 3.3 | Axis meaning is a convention to document | App. C, Ch 16.7 |
+| dtype; precision; range; int64/bool/float32/float16/bfloat16 | 3.4 | Observed precision/overflow | Ch 19.10, Ch 24.4 |
+| Indexing, slicing, boolean masks, table lookup by IDs | 3.5 | `table[ids]` previews embeddings | Ch 10.3 |
+| View vs copy; `clone` | 3.5 | — | — |
+| reshape / view / transpose / contiguity / unsqueeze / squeeze | 3.6 | Head split previewed | Ch 14.3 |
+| Broadcasting (rule in words) and the silent `(N,)` vs `(N,1)` bug | 3.7 | — | Ch 13, 16.8 |
+| Reductions; argmax; topk; keepdim | 3.8 | argmax = greedy choice | Ch 5.7, 17, 21.5 |
+| Batch, batch dimension; stack vs cat; padding (preview) | 3.9 | Exercise 5 pad_and_stack | Ch 11.5–11.6 |
+| NumPy↔PyTorch; float64 default trap | 3.10 | — | — |
+| CPU, GPU, RAM, VRAM, MPS, device, `.to(device)` | 3.11 | VRAM as binding limit | Ch 19, 24, 39 |
+| Memory estimate: elements times bytes per element | 3.12 | Lower bound only | Ch 16.6, 19, 39 |
+| Matrix multiplication (named only, used as benchmark) | 3.12 | Not explained yet | Ch 5.3 (by behavior) |
+| Shape-debugging habits | 3.13 | 7 habits + error table | Ch 16.9, App. D |
 
 ### 3. Prerequisites and unresolved dependencies
 
@@ -98,6 +113,12 @@ Only concepts that have been *delivered* are listed. Planned locations are in th
 | `code/solutions/ch02_iter_sentences.py` | Ch 2 | Tested, executed | `iter_sentences(paths)` |
 | `code/tests/test_config.py` | Ch 2 | 21 tests pass | — |
 | `code/tests/test_ch02_solutions.py` | Ch 2 | 8 tests pass | — |
+| `code/llmfp/devices.py` | Ch 3 | Tested (CPU paths) | `DEVICE_CHOICES`, `available_devices`, `pick_device`, `add_device_argument`, `describe_device`, `tensor_bytes`, `format_bytes` |
+| `code/scripts/ch03_tensor_tour.py` | Ch 3 | Executed (CPU only) | CLI `--device --size --repeats` |
+| `code/examples/ch03/*.py` | Ch 3 | Executed | 9 teaching programs |
+| `code/solutions/ch03_pad_and_stack.py` | Ch 3 | Tested, executed | `pad_and_stack(sequences, pad_id=0) -> (ids, mask)` |
+| `code/tests/test_devices.py`, `test_ch03_solutions.py` | Ch 3 | 21 tests pass (1 skips only on CUDA machines) | — |
+| `tools/audit_chapters.py` | Ch 3 | Executed | Exit 1 on math symbols, filler words, broken links, unexpanded markers |
 | `code/llmfp/counting_lm.py` | Ch 1 | Tested | `START`, `END`, `CountingModelConfig`, `GenerationResult`, `split_into_words`, `join_words`, `rank_followers`, `CountingLanguageModel` (`train`, `context_for`, `followers_for`, `next_word_candidates`, `generate`, `num_parameters`, `num_contexts`, `vocabulary`, `save`, `load`), `read_lines` |
 | `code/scripts/__init__.py` | Ch 1 | — | Makes `scripts` importable as a package |
 | `code/scripts/ch01_counting_demo.py` | Ch 1 | Executed | CLI: `--data --context-size --prompt --samples --max-new-words --seed --checkpoint` |
@@ -149,6 +170,9 @@ Note: Chapter 1 code was written to need only Python 3.10+ features, but it was 
 | Ch 2 scripts, examples, error cases | Via `@@RUN@@` markers in chapter build | Output inserted as observed | 2026-10-02 |
 | Ch 1 + Ch 2 build | `python3 tools/build_book.py` | All markers expanded; prose scan found no math symbols; all relative links resolve | 2026-10-02 |
 | macOS, Windows, GPU install commands | — | **Not executed** (stated in 2.3) | — |
+| Ch 3 full test suite | `pytest` | 72 passed | 2026-10-02 |
+| Ch 3 examples and tour | Via `@@RUN@@` in build | Output inserted as observed; GPU branch of tour **not executed** | 2026-10-02 |
+| Audit of Ch 1–3 | `python3 tools/audit_chapters.py` | ok (Ch 3 "Next" left unlinked until Ch 4 exists) | 2026-10-02 |
 
 ### 7. Teaching simplifications to revisit
 
@@ -166,6 +190,8 @@ Note: Chapter 1 code was written to need only Python 3.10+ features, but it was 
 | Runs overwrite each other in `runs/ch02/` | 2.11 | Ch 4.8: one directory per run, environment capture |
 | Config type checks cover only int/float/str/bool/nested dataclasses | 2.9 | Extend if later configs need lists or optional values |
 | UTF-8 explained only at the level of byte counts | 2.8 | Ch 8.2–8.3 |
+| Matrix multiplication used as a black-box benchmark | 3.12 | Ch 5.3 explains it by behavior |
+| Memory = elements times bytes (ignores activations, optimizer state, overhead) | 3.12 | Ch 16.6, 19, 39 |
 
 ### 8. Open questions and decisions
 

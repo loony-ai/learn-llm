@@ -1,6 +1,6 @@
 ## Chapter 2: Python Foundations and Your Working Environment
 
-[Back to index](../../README.md) · Previous: [Chapter 1](ch01-what-a-language-model-predicts.md) · Next: Chapter 3 (planned)
+[Back to index](../../README.md) · Previous: [Chapter 1](ch01-what-a-language-model-predicts.md) · Next: [Chapter 3](ch03-tensors.md)
 
 Chapter 1's code ran with nothing but Python itself. From Chapter 3 onward, every chapter depends on outside libraries (NumPy, PyTorch, and later many more), on configuration files, and on tests. Machine-learning code is unusually sensitive to its environment: a different library version can change numerical results, change default settings, or refuse to load a saved model. This chapter builds the foundation that makes the rest of the book reproducible, and fills in the Python features the book relies on.
 
@@ -743,4 +743,4 @@ You can now:
 - Recognize and avoid the mutable-default and one-shot-iterator traps.
 - Write pytest tests with fixtures, parametrization, and expected exceptions, including tests for failure cases.
 
-**Next:** Chapter 3 introduces tensors, the arrays of numbers every model is made of, using the NumPy and PyTorch you just installed.
+**Next:** [Chapter 3](ch03-tensors.md) introduces tensors, the arrays of numbers every model is made of, using the NumPy and PyTorch you just installed.

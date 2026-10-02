@@ -45,7 +45,7 @@ File: [ch02-python-foundations-and-environment.md](../part-1-foundations/ch02-py
 - 2.13 Recap, concept checks, exercises, answers, checkpoint
 
 #### Chapter 3: Tensors: NumPy and PyTorch as Containers of Numbers
-Code: `code/llmfp/devices.py`, `code/scripts/ch03_tensor_tour.py`
+File: [ch03-tensors.md](../part-1-foundations/ch03-tensors.md) · Code: `code/llmfp/devices.py`, `code/scripts/ch03_tensor_tour.py`, `code/examples/ch03/`
 
 - 3.1 The problem: a model processes thousands of numbers at once
 - 3.2 From Python lists to arrays: why arrays exist
@@ -60,6 +60,7 @@ Code: `code/llmfp/devices.py`, `code/scripts/ch03_tensor_tour.py`
 - 3.11 Hardware: CPU, GPU, RAM, VRAM, and devices in PyTorch
 - 3.12 Measuring how much memory a tensor uses
 - 3.13 Habits for debugging shapes
+- 3.14 Recap, concept checks, exercises, answers, checkpoint
 
 #### Chapter 4: Data, Experiments, and Reproducibility
 Code: `code/llmfp/experiment.py`, `code/llmfp/splits.py`

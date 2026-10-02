@@ -50,9 +50,9 @@ Each required topic from the book specification and the section that covers it. 
 | What a language model predicts | 1.6–1.7 | ✓ |
 | Why next-token prediction can produce useful capabilities; what it does not prove | 1.12 | ✓ |
 | Python: collections, functions, classes, iterators, generators, files, environments, packages | 2.2–2.9 | ✓ |
-| NumPy and PyTorch prerequisites | Chapter 3 | |
-| Tensors: shapes, dimensions, axes, dtypes, devices, indexing, slicing, reshaping, broadcasting, batching | 3.3–3.11 | |
-| CPU, GPU, RAM, VRAM, hardware constraints | 3.11–3.12 | |
+| NumPy and PyTorch prerequisites | Chapter 3 | ✓ |
+| Tensors: shapes, dimensions, axes, dtypes, devices, indexing, slicing, reshaping, broadcasting, batching | 3.3–3.11 | ✓ |
+| CPU, GPU, RAM, VRAM, hardware constraints | 3.11–3.12 | ✓ (GPU branch not executed) |
 | Reproducibility, seeds, configuration, experiment records | 2.9 (configuration), 4.6–4.8 | Partial: configuration done in Ch 2 |
 | Datasets, examples, labels, splits, leakage, overfitting | 4.2–4.5 | |
 | Neural networks through behavior and code | Chapter 5 | |

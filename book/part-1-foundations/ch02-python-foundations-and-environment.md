@@ -1,6 +1,6 @@
 ## Chapter 2: Python Foundations and Your Working Environment
 
-[Back to index](../../README.md) · Previous: [Chapter 1](ch01-what-a-language-model-predicts.md) · Next: Chapter 3 (planned)
+[Back to index](../../README.md) · Previous: [Chapter 1](ch01-what-a-language-model-predicts.md) · Next: [Chapter 3](ch03-tensors.md)
 
 Chapter 1's code ran with nothing but Python itself. From Chapter 3 onward, every chapter depends on outside libraries (NumPy, PyTorch, and later many more), on configuration files, and on tests. Machine-learning code is unusually sensitive to its environment: a different library version can change numerical results, change default settings, or refuse to load a saved model. This chapter builds the foundation that makes the rest of the book reproducible, and fills in the Python features the book relies on.
 
@@ -228,8 +228,8 @@ All checks passed.
 Then `pytest -q`, from `code/` (the book's build also passes `-p no:cacheprovider`, which only stops pytest from writing a `.pytest_cache` folder):
 
 ```text
-...................................................                      [100%]
-51 passed in 0.07s
+........................................................................ [100%]
+72 passed in 1.34s
 ```
 
 The 51 tests include all of Chapter 1's tests, running unchanged under pytest, plus this chapter's.
@@ -1101,7 +1101,7 @@ E         Use -v to get more diff
 examples/ch02/test_failure_demo.py:17: AssertionError
 =========================== short test summary info ============================
 FAILED examples/ch02/test_failure_demo.py::test_targets_are_inputs_shifted_by_one
-============================== 1 failed in 0.02s ===============================
+============================== 1 failed in 0.01s ===============================
 ```
 
 The report shows the failing line (marked `>`), the two values compared, and the first position where they differ. `targets` equals `inputs`: the function forgot to shift. A loss that decreases nicely can hide this exact bug in a real training pipeline, so Chapter 11 tests for it explicitly.
@@ -1386,9 +1386,9 @@ python -m scripts.ch02_train_counting
 Observed output:
 
 ```text
-2026-10-02 20:42:10,517 INFO    ch02_train_counting: Config: CountingRunConfig(data='data/tiny/harbor.txt', checkpoint='runs/ch02/counting_model.json', seed=0, samples=3, prompt='the keeper', model=CountingModelConfig(context_size=2, lowercase=True))
-2026-10-02 20:42:10,518 INFO    ch02_train_counting: Trained on 40 lines: 359 observations, 226 parameters
-2026-10-02 20:42:10,519 INFO    ch02_train_counting: Saved checkpoint to runs/ch02/counting_model.json and config to runs/ch02/counting_model.config.json
+2026-10-02 21:16:48,446 INFO    ch02_train_counting: Config: CountingRunConfig(data='data/tiny/harbor.txt', checkpoint='runs/ch02/counting_model.json', seed=0, samples=3, prompt='the keeper', model=CountingModelConfig(context_size=2, lowercase=True))
+2026-10-02 21:16:48,446 INFO    ch02_train_counting: Trained on 40 lines: 359 observations, 226 parameters
+2026-10-02 21:16:48,447 INFO    ch02_train_counting: Saved checkpoint to runs/ch02/counting_model.json and config to runs/ch02/counting_model.config.json
 Sample 1: the keeper wrote the time in the lamp went dark during the storm broke the old pier.  [end_marker]
 Sample 2: the keeper wrote the weather in the wind turned the old pier creaked in the lamp went dark during the storm in  [max_new_words]
 Sample 3: the keeper lit the lamp.  [end_marker]
@@ -1687,4 +1687,4 @@ You can now:
 - Recognize and avoid the mutable-default and one-shot-iterator traps.
 - Write pytest tests with fixtures, parametrization, and expected exceptions, including tests for failure cases.
 
-**Next:** Chapter 3 introduces tensors, the arrays of numbers every model is made of, using the NumPy and PyTorch you just installed.
+**Next:** [Chapter 3](ch03-tensors.md) introduces tensors, the arrays of numbers every model is made of, using the NumPy and PyTorch you just installed.

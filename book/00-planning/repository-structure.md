@@ -22,7 +22,8 @@ learn-llm/
 │   ├── part-9-advanced/           # Chapters 43-45         (planned)
 │   └── appendices/                # Appendices A-G         (planned)
 ├── tools/
-│   └── build_book.py              # Expands chapter sources into the chapters you read
+│   ├── build_book.py              # Expands chapter sources into the chapters you read
+│   └── audit_chapters.py          # Checks built chapters: math symbols, filler words, links, markers
 └── code/                          # Companion code (run everything from here)
 ```
 
@@ -44,7 +45,7 @@ code/
 │   ├── __init__.py                # Ch 1
 │   ├── counting_lm.py             # Ch 1  counting next-word model
 │   ├── config.py                  # Ch 2  TOML configs, --set overrides, validation, JSON records
-│   ├── devices.py                 # Ch 3  pick_device(), memory helpers
+│   ├── devices.py                 # Ch 3  pick_device(), add_device_argument(), tensor_bytes(), format_bytes()
 │   ├── experiment.py              # Ch 4  run directories, seeds, experiment records
 │   ├── splits.py                  # Ch 4  deterministic train/val/test splitting
 │   ├── nn_basics.py               # Ch 5  small modules used to teach layers
@@ -88,18 +89,23 @@ code/
 │   ├── __init__.py
 │   ├── ch01_counting_demo.py      # Ch 1
 │   ├── ch02_check_env.py          # Ch 2  verify interpreter, venv, pinned versions
-│   └── ch02_train_counting.py     # Ch 2  config-driven training of the counting model
+│   ├── ch02_train_counting.py     # Ch 2  config-driven training of the counting model
+│   └── ch03_tensor_tour.py        # Ch 3  devices, memory estimates, matmul timing
 ├── tests/                         # pytest-compatible tests, mirroring llmfp/
 │   ├── test_counting_lm.py        # Ch 1
 │   ├── test_ch01_solutions.py     # Ch 1 exercise solutions
 │   ├── test_config.py             # Ch 2
-│   └── test_ch02_solutions.py     # Ch 2 exercise solutions
+│   ├── test_ch02_solutions.py     # Ch 2 exercise solutions
+│   ├── test_devices.py            # Ch 3
+│   └── test_ch03_solutions.py     # Ch 3 exercise solutions
 ├── solutions/                     # Suggested exercise solutions: chNN_<exercise>.py
 │   ├── ch01_backoff.py            # Ch 1, Exercise 5
 │   ├── ch01_memorization.py       # Ch 1, Exercise 6
-│   └── ch02_iter_sentences.py     # Ch 2, Exercise 4
+│   ├── ch02_iter_sentences.py     # Ch 2, Exercise 4
+│   └── ch03_pad_and_stack.py      # Ch 3, Exercise 5
 ├── examples/                      # Small standalone teaching programs: examples/chNN/*.py
-│   └── ch02/                      # Ch 2  collections, functions, classes, generators, files, pytest failure demo
+│   ├── ch02/                      # Ch 2  collections, functions, classes, generators, files, pytest failure demo
+│   └── ch03/                      # Ch 3  arrays, shapes, dtypes, indexing, reshaping, broadcasting, reductions, batching
 ├── configs/                       # TOML experiment configs (<purpose>-cpu.toml, <purpose>-gpu.toml)
 │   └── counting-cpu.toml          # Ch 2
 ├── data/
@@ -121,6 +127,7 @@ These signatures are promises. A later chapter may *add* parameters with default
 | `CountingLanguageModel` | Ch 1 | `.train(lines) -> int`, `.followers_for(words) -> Counter or None`, `.next_word_candidates(prompt, top=5)`, `.generate(prompt, max_new_words=20, rng=None, greedy=False) -> GenerationResult`, `.save(path)`, `.load(path)` |
 | `load_config` | Ch 2 | `load_config(cls, path=None, overrides=None) -> cls`; also `from_dict`, `apply_overrides`, `parse_value`, `to_dict`, `save_json`, `load_json`, `ConfigError` |
 | Script config convention | Ch 2 | `--config <file.toml>`, repeatable `--set key=value`, `--log-level`; resolved config saved as JSON beside outputs |
+| Device selection | Ch 3 | `pick_device(preference="auto") -> torch.device`; every PyTorch script takes `--device auto\|cpu\|cuda\|mps` via `add_device_argument` |
 | `Tokenizer` protocol | Ch 8 | `.encode(text) -> list[int]`, `.decode(ids) -> str`, `.vocab_size`, `.save(path)`, `.load(path)` |
 | `GPTConfig` | Ch 12 | dataclass: `vocab_size, context_length, d_model, n_heads, n_layers, dropout, ...` |
 | `GPT.forward` | Ch 16 | `(token_ids[B, T], attention_mask=None, kv_cache=None) -> logits[B, T, vocab_size]` |
