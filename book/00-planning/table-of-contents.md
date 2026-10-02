@@ -152,16 +152,17 @@ File: [ch09-byte-pair-encoding.md](../part-2-text-to-inputs/ch09-byte-pair-encod
 - 9.11 Common mistakes, recap, concept checks, exercises, answers, checkpoint
 
 #### Chapter 10: Embeddings and Position
-Code: `code/llmfp/model/embeddings.py`
+File: [ch10-embeddings-and-position.md](../part-2-text-to-inputs/ch10-embeddings-and-position.md) · Code: `code/llmfp/model/embeddings.py`, `embedding_mlp.py`, `code/scripts/ch10_train_embedding_model.py`
 
 - 10.1 The problem: token IDs are labels, not measurements
 - 10.2 One-hot inputs revisited, and their cost
 - 10.3 Embedding tables: a learned lookup
 - 10.4 Vectors as lists of learned features; similarity and cosine similarity, by behavior
-- 10.5 Inspecting the embeddings learned in Chapter 7
+- 10.5 Training embeddings and inspecting what they learn
 - 10.6 Why order matters: what a bag of tokens loses
 - 10.7 Learned positional embeddings
 - 10.8 Preview of other positional methods
+- 10.9 Common mistakes, recap, concept checks, exercises, answers, checkpoint
 
 #### Chapter 11: Sequences, Batches, and Next-Token Targets
 Code: `code/llmfp/data/windows.py`, `code/llmfp/data/collate.py`

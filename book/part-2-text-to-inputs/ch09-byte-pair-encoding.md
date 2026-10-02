@@ -1,6 +1,6 @@
 ## Chapter 9: Byte-Pair Encoding: Building a Subword Tokenizer (Capstone Project 1)
 
-[Back to index](../../README.md) · Previous: [Chapter 8](ch08-text-unicode-bytes-tokens.md) · Next: Chapter 10 (planned)
+[Back to index](../../README.md) · Previous: [Chapter 8](ch08-text-unicode-bytes-tokens.md) · Next: [Chapter 10](ch10-embeddings-and-position.md)
 
 Chapter 8 ended with a dilemma. Bytes can represent any text but make sequences long; words keep sequences short but leave much of the input unknown. **Byte-pair encoding** (BPE) resolves it. It starts from bytes, so nothing is ever unknown, and learns from data which byte sequences occur often enough to deserve a token of their own. Frequent words become single tokens, rarer words are split into a few familiar pieces, and anything unusual falls back to bytes.
 
@@ -595,7 +595,7 @@ python -m scripts.ch09_train_bpe
 Observed output:
 
 ```text
-Run: runs/ch09-bpe/20261002-234711
+Run: runs/ch09-bpe/20261002-235437
 Trained on 521,204 characters in 2.8 s: 1791 merges, vocab_size 2048
 Corpus: 521,350 bytes -> 148,187 tokens (3.52 bytes per token)
 Round trip on the whole corpus: True; saved to data/tokenizer/harbor-bpe-2048.json; reload identical: True
@@ -808,7 +808,7 @@ Observed output (characters per token on held-out text):
    512     256      0.4       3.59       1.78       1.52       0.78
   1024     768      0.9       4.39       2.38       2.02       0.81
   2048    1792      2.2       4.39       2.99       2.54       0.83
-  4096    3840      4.7       4.39       3.45       2.97       0.84
+  4096    3840      4.8       4.39       3.45       2.97       0.84
   6432    6176      7.1       4.39       3.70       3.12       0.85
 ```
 
@@ -1097,4 +1097,4 @@ You have completed Capstone Project 1. You can now:
 - Load a published tokenizer at a pinned revision and compare tokenizers fairly on held-out text.
 - Explain, with measurements, how tokenization affects languages, code, numbers, context, and cost.
 
-**Next:** Chapter 10 turns token IDs into something a network can learn from: embeddings, and a way to represent position.
+**Next:** [Chapter 10](ch10-embeddings-and-position.md) turns token IDs into something a network can learn from: embeddings, and a way to represent position.

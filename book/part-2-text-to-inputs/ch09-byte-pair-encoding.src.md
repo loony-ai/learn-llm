@@ -1,6 +1,6 @@
 ## Chapter 9: Byte-Pair Encoding: Building a Subword Tokenizer (Capstone Project 1)
 
-[Back to index](../../README.md) · Previous: [Chapter 8](ch08-text-unicode-bytes-tokens.md) · Next: Chapter 10 (planned)
+[Back to index](../../README.md) · Previous: [Chapter 8](ch08-text-unicode-bytes-tokens.md) · Next: [Chapter 10](ch10-embeddings-and-position.md)
 
 Chapter 8 ended with a dilemma. Bytes can represent any text but make sequences long; words keep sequences short but leave much of the input unknown. **Byte-pair encoding** (BPE) resolves it. It starts from bytes, so nothing is ever unknown, and learns from data which byte sequences occur often enough to deserve a token of their own. Frequent words become single tokens, rarer words are split into a few familiar pieces, and anything unusual falls back to bytes.
 
@@ -469,4 +469,4 @@ You have completed Capstone Project 1. You can now:
 - Load a published tokenizer at a pinned revision and compare tokenizers fairly on held-out text.
 - Explain, with measurements, how tokenization affects languages, code, numbers, context, and cost.
 
-**Next:** Chapter 10 turns token IDs into something a network can learn from: embeddings, and a way to represent position.
+**Next:** [Chapter 10](ch10-embeddings-and-position.md) turns token IDs into something a network can learn from: embeddings, and a way to represent position.

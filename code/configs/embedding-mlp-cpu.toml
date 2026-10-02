@@ -1,0 +1,14 @@
+# Chapter 10: next-token models with learned embeddings, on BPE tokens.
+runs_root = "runs"
+run_name = "ch10-embeddings"
+data = "data/tiny/harbor_synth.txt"
+tokenizer = "data/tokenizer/harbor-bpe-2048.json"
+seed = 0
+context_size = 8
+d_model = 32
+hidden = 128
+learning_rate = 0.003
+epochs = 10
+batch_size = 128
+modes = ["concat", "bag", "bag_position"]
+probe_tokens = [" keeper", " dawn", " lit", " lamp"]

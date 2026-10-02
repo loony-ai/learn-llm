@@ -4,7 +4,7 @@
 
 The ledger is the book's source of truth for what has been delivered, what depends on what, and what must be revisited. Update it with every chapter.
 
-**Last updated:** 2026-10-02, after Chapter 9.
+**Last updated:** 2026-10-02, after Chapter 10.
 
 ### 1. Completed chapters and outstanding sections
 
@@ -21,7 +21,8 @@ The ledger is the book's source of truth for what has been delivered, what depen
 | **Part 1** | **Complete** | Chapters 1–7 |
 | 8 Text, Unicode, bytes, tokens | Done | Sections 8.1–8.9, 6 exercises with answers |
 | 9 Byte-pair encoding (Project 1) | Done | Sections 9.1–9.11 incl. project review; 6 exercises with answers |
-| 10–45 | Not started | Next: Chapter 10 |
+| 10 Embeddings and position | Done | Sections 10.1–10.9 (10.5 retitled), 6 exercises with answers |
+| 11–45 | Not started | Next: Chapter 11 |
 | Appendices A–G | Not started | The glossary will be seeded from the ledger's concept table |
 
 ### 2. Concepts introduced
@@ -157,6 +158,12 @@ Only concepts that have been *delivered* are listed. Planned locations are in th
 | Hugging Face Hub; pinned revision; local cache (introduced) | 9.8 | GPT-2 tokenizer 607a30d7… | Ch 23.3 |
 | Compression (characters per token) on held-out text | 9.8 | Ours vs GPT-2 vs bytes | Ch 24 |
 | Tokenization effects: multilingual, code, numbers, context, cost, vocab size | 9.9 | Measured | Ch 41.7 |
+| Vector; embedding table; embedding; d_model | 10.3 | Equivalence with one-hot; only used rows learn | Ch 12.7, 16.2 |
+| Cosine similarity (by behavior); "features" analogy caveat | 10.4 | Helpers | Ch 32 |
+| Inspecting learned tables honestly (input vs output rows; null result) | 10.5 | Output rows group by role; inputs do not | Ch 16.5 (weight tying) |
+| Bag of tokens; order loss measured | 10.6 | 65.1% vs 71.0% | Ch 13 |
+| Learned positional embeddings; averaging trap; limits | 10.7 | 72.2% | Ch 15.7, 43.4 |
+| Sinusoidal, RoPE, relative positions (preview) | 10.8 | Named | Ch 15.7 |
 
 ### 3. Prerequisites and unresolved dependencies
 
@@ -222,6 +229,11 @@ Only concepts that have been *delivered* are listed. Planned locations are in th
 | `code/projects/p1_tokenizer/README.md` | Ch 9 | — | Project 1 command list |
 | `code/solutions/ch09_vocab_sweep.py` | Ch 9 | Executed | — |
 | `code/tests/test_bpe.py`, `tests/__init__.py` | Ch 9 | 29 tests pass | — |
+| `code/llmfp/model/__init__.py`, `embeddings.py`, `embedding_mlp.py` | Ch 10 | Tested | `TokenAndPositionEmbedding`, `cosine_similarity_matrix`, `nearest_neighbors`, `EmbeddingMLPConfig`, `EmbeddingMLP`, `MODES` |
+| `code/scripts/ch10_train_embedding_model.py` | Ch 10 | Executed | `EmbeddingRunConfig`, `ROLE_GROUPS`, `role_similarity` |
+| `code/examples/ch10/*.py` | Ch 10 | Executed | 4 programs |
+| `code/solutions/ch10_average_first.py` | Ch 10 | Tested, executed | `AverageFirstModel` |
+| `code/tests/test_embeddings.py` | Ch 10 | 13 tests pass | — |
 | `code/llmfp/counting_lm.py` | Ch 1 | Tested | `START`, `END`, `CountingModelConfig`, `GenerationResult`, `split_into_words`, `join_words`, `rank_followers`, `CountingLanguageModel` (`train`, `context_for`, `followers_for`, `next_word_candidates`, `generate`, `num_parameters`, `num_contexts`, `vocabulary`, `save`, `load`), `read_lines` |
 | `code/scripts/__init__.py` | Ch 1 | — | Makes `scripts` importable as a package |
 | `code/scripts/ch01_counting_demo.py` | Ch 1 | Executed | CLI: `--data --context-size --prompt --samples --max-new-words --seed --checkpoint` |
@@ -300,6 +312,10 @@ Note: Chapter 1 code was written to need only Python 3.10+ features, but it was 
 | Ch 9 debugging-exercise claim | One-off regex check | Rewritten to the observed failure (newline/tab before a word) | 2026-10-02 |
 | Lock file regenerated with tokenizers | `pip freeze` | Not re-verified in a fresh venv this time | 2026-10-02 |
 | Audit of Ch 1–9 | `python3 tools/audit_chapters.py` | ok | 2026-10-02 |
+| Ch 10 full test suite | `pytest` | 191 passed | 2026-10-02 |
+| Ch 10 Exercise 4 claim | One-off measurement | Seen rows 5.64 to 5.98, unseen 5.61 to 5.48; quoted | 2026-10-02 |
+| Ch 10 design error found and fixed during writing | bag_position originally averaged first | Kept as Exercise 5 with a guard test | 2026-10-02 |
+| Audit of Ch 1–10 | `python3 tools/audit_chapters.py` | ok | 2026-10-02 |
 
 ### 7. Teaching simplifications to revisit
 
@@ -335,6 +351,8 @@ Note: Chapter 1 code was written to need only Python 3.10+ features, but it was 
 | Short-prompt padding with newlines as a start marker | 7.7 | Ch 9.6 (special tokens) |
 | Pre-tokenization pattern approximates GPT-2's (no `regex` module) | 9.3 | Extension 3 |
 | Tokenizer corpus is small and English-only | 9.8 | Ch 18 (real dataset) |
+| Embedding MLP with fixed context (no attention) | 10.5 | Part 3 |
+| Most of the 2048-row vocabulary unused by harbor data | 10.5 | Ch 18 (tokenizer trained on pretraining data) |
 | Model checkpoint without optimizer/RNG state | 7.8 | Ch 19.9 |
 
 ### 8. Open questions and decisions

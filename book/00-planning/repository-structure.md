@@ -64,7 +64,9 @@ code/
 │   │   └── pipeline.py            #   download → clean → dedup → split → tokenize → shard
 │   ├── model/                     # Ch 10, 12-17
 │   │   ├── config.py              #   GPTConfig
-│   │   ├── embeddings.py          #   token + learned position embeddings
+│   │   ├── __init__.py            #   Ch 10
+│   │   ├── embeddings.py          #   Ch 10 TokenAndPositionEmbedding, cosine_similarity_matrix, nearest_neighbors
+│   │   ├── embedding_mlp.py       #   Ch 10 EmbeddingMLP (concat / bag / bag_position)
 │   │   ├── attention.py           #   single-head, causal, multi-head attention
 │   │   ├── layers.py              #   feed-forward, LayerNorm/RMSNorm
 │   │   ├── positions.py           #   rotary positional embeddings
@@ -103,7 +105,8 @@ code/
 │   ├── ch08_compare_units.py      # Ch 8  words vs characters vs bytes
 │   ├── ch09_build_corpus.py       # Ch 9  fixed tokenizer corpus (harbor + Part 1 sources + code)
 │   ├── ch09_train_bpe.py          # Ch 9  train + save the Project 1 tokenizer
-│   └── ch09_compare_tokenizers.py # Ch 9  ours vs GPT-2 (pinned revision) vs bytes
+│   ├── ch09_compare_tokenizers.py # Ch 9  ours vs GPT-2 (pinned revision) vs bytes
+│   └── ch10_train_embedding_model.py # Ch 10 three ways to combine embeddings; role similarity
 ├── tests/                         # pytest-compatible tests, mirroring llmfp/
 │   ├── test_counting_lm.py        # Ch 1
 │   ├── test_ch01_solutions.py     # Ch 1 exercise solutions
@@ -119,7 +122,8 @@ code/
 │   ├── test_char_model.py         # Ch 7 (+ Ch 7 solutions)
 │   ├── __init__.py                # Ch 9  makes tests importable as a package (shared fixtures)
 │   ├── test_tokenizers.py         # Ch 8
-│   └── test_bpe.py                # Ch 9
+│   ├── test_bpe.py                # Ch 9
+│   └── test_embeddings.py         # Ch 10 (+ Ch 10 solution)
 ├── solutions/                     # Suggested exercise solutions: chNN_<exercise>.py
 │   ├── ch01_backoff.py            # Ch 1, Exercise 5
 │   ├── ch01_memorization.py       # Ch 1, Exercise 6
@@ -133,7 +137,8 @@ code/
 │   ├── ch07_context_sweep.py      # Ch 7, Exercise 1
 │   ├── ch07_off_by_one.py         # Ch 7, Exercise 4
 │   ├── ch07_fact_check.py         # Ch 7, Exercise 5
-│   └── ch09_vocab_sweep.py        # Ch 9, Exercise 3
+│   ├── ch09_vocab_sweep.py        # Ch 9, Exercise 3
+│   └── ch10_average_first.py      # Ch 10, Exercise 5
 ├── examples/                      # Small standalone teaching programs: examples/chNN/*.py
 │   ├── ch02/                      # Ch 2  collections, functions, classes, generators, files, pytest failure demo
 │   ├── ch03/                      # Ch 3  arrays, shapes, dtypes, indexing, reshaping, broadcasting, reductions, batching
@@ -141,13 +146,15 @@ code/
 │   ├── ch05/                      # Ch 5  unit, linear layer, activations, modules, softmax
 │   ├── ch06/                      # Ch 6  cross-entropy, nudging, autograd, optimizers, accumulation, modes
 │   ├── ch08/                      # Ch 8  Unicode, UTF-8 bytes, normalization
-│   └── ch09/                      # Ch 9  BPE by hand
+│   ├── ch09/                      # Ch 9  BPE by hand
+│   └── ch10/                      # Ch 10 IDs as labels, lookup, cosine, bag of tokens
 ├── configs/                       # TOML experiment configs (<purpose>-cpu.toml, <purpose>-gpu.toml)
 │   ├── counting-cpu.toml          # Ch 2
 │   ├── counting-eval-cpu.toml     # Ch 4
 │   ├── band-cpu.toml              # Ch 6
 │   ├── char-model-cpu.toml        # Ch 7
-│   └── bpe-cpu.toml               # Ch 9
+│   ├── bpe-cpu.toml               # Ch 9
+│   └── embedding-mlp-cpu.toml     # Ch 10
 ├── data/
 │   ├── tiny/harbor.txt            # Ch 1: 40 original sentences (written for this book)
 │   ├── tiny/harbor_synth.txt      # Ch 4: 3000 generated sentences, 1024 distinct (seed 0)
@@ -180,6 +187,7 @@ These signatures are promises. A later chapter may *add* parameters with default
 | Character model | Ch 7 | `CharVocabulary.build(text)`, `.encode`, `.decode`; `make_examples(ids, context_size) -> (contexts, targets)`; `CharMLP(CharModelConfig(vocab_size, context_size=8, hidden=128))`; `sample_text(model, vocab, prompt, length, generator=None, greedy=False)`; `save_checkpoint(dir, model, vocab, extra)` / `load_checkpoint(dir, device)` |
 | `Tokenizer` (abstract base class) | Ch 8 | `.encode(text) -> list[int]`, `.decode(ids) -> str`, `.vocab_size`, `.to_dict()`, `.from_dict(data)`, `.round_trips(text)`; files via `save_tokenizer(tok, path)` / `load_tokenizer(path)` (correction: the plan said `.save`/`.load` methods; module functions with a registry were chosen instead) |
 | BPE tokenizer | Ch 9 | `BPETokenizer.train(text, vocab_size, special_tokens=(), pattern=PATTERN, min_count=2)`; `.encode(text, *, allowed_special=())`; `.special_tokens` dict; `.token_text(id)` |
+| Embeddings | Ch 10 | `TokenAndPositionEmbedding(vocab_size, context_length, d_model)`: `(B, T) -> (B, T, d_model)`, error if T > context_length |
 | `GPTConfig` | Ch 12 | dataclass: `vocab_size, context_length, d_model, n_heads, n_layers, dropout, ...` |
 | `GPT.forward` | Ch 16 | `(token_ids[B, T], attention_mask=None, kv_cache=None) -> logits[B, T, vocab_size]` |
 | `generate` | Ch 17 | `generate(model, token_ids, max_new_tokens, decoding=DecodingConfig(), stop_ids=())` |
