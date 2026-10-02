@@ -1,6 +1,6 @@
 ## Chapter 3: Tensors: NumPy and PyTorch as Containers of Numbers
 
-[Back to index](../../README.md) · Previous: [Chapter 2](ch02-python-foundations-and-environment.md) · Next: Chapter 4 (planned)
+[Back to index](../../README.md) · Previous: [Chapter 2](ch02-python-foundations-and-environment.md) · Next: [Chapter 4](ch04-data-experiments-reproducibility.md)
 
 The counting model in Chapter 1 stored its parameters in Python dictionaries: a few hundred counts, each with a readable label. A neural network stores millions or billions of unlabeled numbers, and on every prediction it combines huge blocks of them at once. Python dictionaries and lists cannot do that fast enough. The data structure that can is the **tensor**: a block of numbers of a single type, arranged in a grid with a fixed shape.
 
@@ -106,9 +106,9 @@ print("Array memory      :", array_a.nbytes, "bytes =", array_a.nbytes // size, 
 Observed output (timings vary with the machine and from run to run):
 
 ```text
-Python list loop :    49.41 ms
-NumPy array op   :     2.28 ms
-Speed-up         : about 22x
+Python list loop :    49.94 ms
+NumPy array op   :     8.55 ms
+Speed-up         : about 6x
 Same results     : True [0.0, 2.0, 4.0]
 List element type : float | array element type: float64
 Array memory      : 8000000 bytes = 8 bytes per number
@@ -890,7 +890,7 @@ Memory just to hold the parameters of a model with 124 million parameters:
   torch.float32    473.0 MiB
   torch.bfloat16   236.5 MiB
 
-2048x2048 matrix multiplication on cpu: 84.9 ms
+2048x2048 matrix multiplication on cpu: 84.1 ms
 
 (Only the CPU is available, so the GPU comparison is skipped.)
 ```
@@ -1051,4 +1051,4 @@ You can now:
 - Select a device from the command line and estimate the memory a tensor or a model's parameters will need.
 - Debug a shape error by printing shapes, dtypes, and devices, and guard against silent errors with assertions and well-chosen test sizes.
 
-**Next:** Chapter 4 makes experiments trustworthy: splitting data so evaluation is honest, recognizing leakage and overfitting, and recording every run so it can be reproduced.
+**Next:** [Chapter 4](ch04-data-experiments-reproducibility.md) makes experiments trustworthy: splitting data so evaluation is honest, recognizing leakage and overfitting, and recording every run so it can be reproduced.

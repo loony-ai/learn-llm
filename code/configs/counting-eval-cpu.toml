@@ -1,0 +1,13 @@
+# Chapter 4: evaluate the counting model on held-out data.
+# Try:  --set split=shuffle --set deduplicate=false   (leaky)
+#       --set split=hash --set deduplicate=true       (honest; the default)
+
+data = "data/tiny/harbor_synth.txt"
+runs_root = "runs"
+run_name = "ch04-counting-eval"
+split = "hash"                 # "hash" or "shuffle"
+deduplicate = true             # remove exact duplicate sentences before splitting
+fractions = [0.8, 0.1, 0.1]    # train, validation, test
+seed = 0                       # shuffle seed; also used as the hash salt
+context_sizes = [1, 2, 4, 6, 8, 10]
+evaluate_test = false          # look at the test set only once, at the very end

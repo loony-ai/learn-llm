@@ -63,7 +63,7 @@ File: [ch03-tensors.md](../part-1-foundations/ch03-tensors.md) · Code: `code/ll
 - 3.14 Recap, concept checks, exercises, answers, checkpoint
 
 #### Chapter 4: Data, Experiments, and Reproducibility
-Code: `code/llmfp/experiment.py`, `code/llmfp/splits.py`
+File: [ch04-data-experiments-reproducibility.md](../part-1-foundations/ch04-data-experiments-reproducibility.md) · Code: `code/llmfp/experiment.py`, `code/llmfp/splits.py`, `code/llmfp/counting_eval.py`, `code/scripts/ch04_*.py`
 
 - 4.1 The problem: a result you cannot reproduce is a result you cannot trust
 - 4.2 Datasets, examples, inputs, and labels
@@ -73,7 +73,8 @@ Code: `code/llmfp/experiment.py`, `code/llmfp/splits.py`
 - 4.6 Random seeds and sources of nondeterminism
 - 4.7 Configuration files and command-line overrides
 - 4.8 Experiment records: run directories, metadata, environment capture
-- 4.9 Milestone: measuring the counting model on held-out sentences
+- 4.9 Milestone: how much of a difference is real?
+- 4.10 Common mistakes, recap, concept checks, exercises, answers, checkpoint
 
 #### Chapter 5: Neural Networks Through Behavior and Code
 Code: `code/llmfp/nn_basics.py`

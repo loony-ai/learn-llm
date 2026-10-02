@@ -4,7 +4,7 @@
 
 The ledger is the book's source of truth for what has been delivered, what depends on what, and what must be revisited. Update it with every chapter.
 
-**Last updated:** 2026-10-02, after Chapter 3.
+**Last updated:** 2026-10-02, after Chapter 4.
 
 ### 1. Completed chapters and outstanding sections
 
@@ -14,7 +14,8 @@ The ledger is the book's source of truth for what has been delivered, what depen
 | 1 What a language model is and what it predicts | Done | All 15 sections, exercises, and answers |
 | 2 Python foundations and your working environment | Done | Sections 2.1–2.13 (2.13 added for recap/exercises), 6 exercises with answers |
 | 3 Tensors | Done | Sections 3.1–3.14 (3.14 added for recap/exercises), 6 exercises with answers |
-| 4–45 | Not started | Next: Chapter 4 |
+| 4 Data, experiments, reproducibility | Done | Sections 4.1–4.10 (4.9 retitled; 4.10 added), 6 exercises with answers |
+| 5–45 | Not started | Next: Chapter 5 |
 | Appendices A–G | Not started | The glossary will be seeded from the ledger's concept table |
 
 ### 2. Concepts introduced
@@ -87,6 +88,18 @@ Only concepts that have been *delivered* are listed. Planned locations are in th
 | Memory estimate: elements times bytes per element | 3.12 | Lower bound only | Ch 16.6, 19, 39 |
 | Matrix multiplication (named only, used as benchmark) | 3.12 | Not explained yet | Ch 5.3 (by behavior) |
 | Shape-debugging habits | 3.13 | 7 habits + error table | Ch 16.9, App. D |
+| Dataset, example, input, label; self-supervised (named) | 4.2 | — | Ch 11 |
+| Training/validation/test splits; generalization | 4.3 | Test used once | Ch 18, 37 |
+| Hash function, SHA-256, stable hash split | 4.3 | Duplicates grouped; stable as data grows | Ch 18.5 |
+| Leakage (duplicates, groups, preprocessing, time, peeking); contamination (named) | 4.4 | Measured: 66.7% vs 45.6% val acc at ctx 10 | Ch 18.6, 20.6, 37.4 |
+| Accuracy, coverage (as shares of positions) | 4.4 | Counting model only | Ch 6 (loss), Ch 19.3 |
+| Overfitting, underfitting | 4.5 | Measured via context size | Ch 19.4 |
+| Irreducible uncertainty (informal) | 4.5 | Train acc stays ~76% | Ch 19.3 |
+| Pseudo-random generator, seed limits | 4.6 | Extra draw shifts sequence | Ch 5–7 |
+| PYTHONHASHSEED / set order nondeterminism | 4.6 | Demonstrated | — |
+| GPU nondeterminism; deterministic algorithms (named) | 4.6 | Not executed | Ch 19 |
+| Experiment record; environment capture; data fingerprint | 4.8 | `start_run`/`finish_run` | Ch 19, 41.5 |
+| Judging differences by repeated measurement with irrelevant variation | 4.9 | Salt spread | Ch 37.7 |
 
 ### 3. Prerequisites and unresolved dependencies
 
@@ -119,6 +132,13 @@ Only concepts that have been *delivered* are listed. Planned locations are in th
 | `code/solutions/ch03_pad_and_stack.py` | Ch 3 | Tested, executed | `pad_and_stack(sequences, pad_id=0) -> (ids, mask)` |
 | `code/tests/test_devices.py`, `test_ch03_solutions.py` | Ch 3 | 21 tests pass (1 skips only on CUDA machines) | — |
 | `tools/audit_chapters.py` | Ch 3 | Executed | Exit 1 on math symbols, filler words, broken links, unexpanded markers |
+| `code/llmfp/splits.py` | Ch 4 | Tested | `Splits`, `shuffle_split`, `stable_fraction`, `hash_split`, `deduplicate`, `count_overlap` |
+| `code/llmfp/experiment.py` | Ch 4 | Tested | `set_seed`, `file_sha256`, `capture_environment`, `create_run_dir`, `start_run`, `finish_run` |
+| `code/llmfp/counting_eval.py` | Ch 4 | Tested | `evaluate_counting_model(model, lines) -> {positions, coverage, accuracy, accuracy_when_covered}` |
+| `code/scripts/ch04_make_harbor_corpus.py` | Ch 4 | Executed | Writes `data/tiny/harbor_synth.txt` (seed 0, 3000 lines, SHA-256 a412d79e…) |
+| `code/scripts/ch04_evaluate_counting.py` | Ch 4 | Executed | `EvalConfig`; `configs/counting-eval-cpu.toml` |
+| `code/solutions/ch04_seed_spread.py`, `ch04_compare_runs.py` | Ch 4 | Executed | — |
+| `code/tests/test_splits.py`, `test_experiment.py` | Ch 4 | 21 tests pass | — |
 | `code/llmfp/counting_lm.py` | Ch 1 | Tested | `START`, `END`, `CountingModelConfig`, `GenerationResult`, `split_into_words`, `join_words`, `rank_followers`, `CountingLanguageModel` (`train`, `context_for`, `followers_for`, `next_word_candidates`, `generate`, `num_parameters`, `num_contexts`, `vocabulary`, `save`, `load`), `read_lines` |
 | `code/scripts/__init__.py` | Ch 1 | — | Makes `scripts` importable as a package |
 | `code/scripts/ch01_counting_demo.py` | Ch 1 | Executed | CLI: `--data --context-size --prompt --samples --max-new-words --seed --checkpoint` |
@@ -173,6 +193,10 @@ Note: Chapter 1 code was written to need only Python 3.10+ features, but it was 
 | Ch 3 full test suite | `pytest` | 72 passed | 2026-10-02 |
 | Ch 3 examples and tour | Via `@@RUN@@` in build | Output inserted as observed; GPU branch of tour **not executed** | 2026-10-02 |
 | Audit of Ch 1–3 | `python3 tools/audit_chapters.py` | ok (Ch 3 "Next" left unlinked until Ch 4 exists) | 2026-10-02 |
+| Ch 4 full test suite | `pytest` | 93 passed | 2026-10-02 |
+| Ch 4 evaluation runs, reproducibility check, seed spread | Via `@@RUN@@` | Identical reruns showed 0 differences | 2026-10-02 |
+| Ch 4 Exercises 2 and 6 claims | Scratch scripts (not in repo) | Numbers quoted in answers as the author's run | 2026-10-02 |
+| Audit of Ch 1–4 | `python3 tools/audit_chapters.py` | ok | 2026-10-02 |
 
 ### 7. Teaching simplifications to revisit
 
@@ -192,6 +216,10 @@ Note: Chapter 1 code was written to need only Python 3.10+ features, but it was 
 | UTF-8 explained only at the level of byte counts | 2.8 | Ch 8.2–8.3 |
 | Matrix multiplication used as a black-box benchmark | 3.12 | Ch 5.3 explains it by behavior |
 | Memory = elements times bytes (ignores activations, optimizer state, overhead) | 3.12 | Ch 16.6, 19, 39 |
+| Synthetic template corpus (far more regular than real text) | 4.2 | Part 4 real dataset |
+| Config validation passes lists through unchecked | 4.7 | Extend `_check_type` if later configs need it |
+| Exact-duplicate dedup only | 4.4 | Ch 18.5 near-duplicates |
+| Variation judged by spread across salts, no statistics | 4.9 | Ch 37.7 |
 
 ### 8. Open questions and decisions
 
