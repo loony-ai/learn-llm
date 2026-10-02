@@ -65,7 +65,7 @@ Each required topic from the book specification and the section that covers it. 
 
 | Part | Required topics | Covered in |
 |---|---|---|
-| 2 | **Ch 8 done:** encoding, Unicode, bytes, characters, words, tokens; why tokenization; char/word/byte units. **Ch 9:** subword; BPE implementation; vocabulary, IDs, special and unknown tokens; training vs existing tokenizer; round trips; multilingual, code, context length, cost | Chapters 8–9 |
+| 2 | **Ch 8 done:** encoding, Unicode, bytes, characters, words, tokens; why tokenization; char/word/byte units. **Ch 9 done:** subword; BPE implementation; vocabulary, IDs, special and unknown tokens; training vs existing tokenizer; round trips; multilingual, code, context length, cost | Chapters 8–9 |
 | 2 | Embeddings, tables, IDs as identifiers; positional information | Chapter 10 |
 | 2 | Sequences, context windows, sliding windows, batches, padding, packing, masks; inputs and targets; off-by-one errors | Chapter 11 |
 | 3 | Architecture tour; why decoder-only | Chapter 12 |

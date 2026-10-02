@@ -1,0 +1,8 @@
+# Chapter 9 (Project 1): train a byte-level BPE tokenizer.
+runs_root = "runs"
+run_name = "ch09-bpe"
+corpus = "data/tokenizer/corpus.txt"
+vocab_size = 2048
+special_tokens = ["<|endoftext|>"]
+min_count = 2
+output = "data/tokenizer/harbor-bpe-2048.json"

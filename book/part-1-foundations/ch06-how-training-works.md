@@ -708,7 +708,7 @@ python -m scripts.ch06_train_band
 Observed output (a few seconds on the test machine):
 
 ```text
-Run: runs/ch06-band/20261002-214735
+Run: runs/ch06-band/20261002-234506
 Baseline 'always answer 0': val accuracy 75.6%
 Untrained model: val loss 0.559, val accuracy 75.6%
 epoch | train loss | val loss | val acc

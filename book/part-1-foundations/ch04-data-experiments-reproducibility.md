@@ -397,7 +397,7 @@ python -m scripts.ch04_evaluate_counting --set split=shuffle --set deduplicate=f
 Observed output:
 
 ```text
-Run: runs/ch04-counting-eval/20261002-213021
+Run: runs/ch04-counting-eval/20261002-234432
 Data: data/tiny/harbor_synth.txt (1024 distinct sentences)
 Split: shuffle, deduplicate=False, sizes={'train': 2400, 'validation': 300, 'test': 300}
 Validation sentences that also appear in training: 245 of 300
@@ -419,7 +419,7 @@ python -m scripts.ch04_evaluate_counting
 Observed output:
 
 ```text
-Run: runs/ch04-counting-eval/20261002-213024
+Run: runs/ch04-counting-eval/20261002-234434
 Data: data/tiny/harbor_synth.txt (1024 distinct sentences)
 Split: hash, deduplicate=True, sizes={'train': 824, 'validation': 112, 'test': 88}
 Validation sentences that also appear in training: 0 of 112
@@ -468,7 +468,7 @@ python -m scripts.ch04_evaluate_counting --set evaluate_test=true --set "context
 ```
 
 ```text
-Run: runs/ch04-counting-eval/20261002-213025
+Run: runs/ch04-counting-eval/20261002-234436
 Data: data/tiny/harbor_synth.txt (1024 distinct sentences)
 Split: hash, deduplicate=True, sizes={'train': 824, 'validation': 112, 'test': 88}
 Validation sentences that also appear in training: 0 of 112
@@ -584,9 +584,9 @@ Observed output (the first three lines will differ every time you run it):
 
 ```text
 Three fresh processes, default settings:
-   ['pier', 'keeper', 'lamp', 'fog', 'gulls', 'boats']
-   ['gulls', 'pier', 'lamp', 'boats', 'keeper', 'fog']
-   ['pier', 'keeper', 'gulls', 'lamp', 'fog', 'boats']
+   ['boats', 'gulls', 'lamp', 'fog', 'pier', 'keeper']
+   ['lamp', 'pier', 'gulls', 'keeper', 'fog', 'boats']
+   ['gulls', 'lamp', 'keeper', 'pier', 'fog', 'boats']
 Three fresh processes with PYTHONHASHSEED=0:
    ['gulls', 'pier', 'lamp', 'fog', 'boats', 'keeper']
    ['gulls', 'pier', 'lamp', 'fog', 'boats', 'keeper']
@@ -792,17 +792,17 @@ cat runs/ch04-counting-eval/<run>/environment.json
     "data/tiny/harbor_synth.txt": "a412d79eebbab1d251fe06d83844a77cba91e15041f6786526f48b437c2650f7"
   },
   "executable": "/home/sankar/ai/learn-llm/code/.venv/bin/python",
-  "git_commit": "b76e8c1e44fe3ec5e1cf6f1eae08cd54b8745d61",
+  "git_commit": "a3fce73053d818e01305fef91cf85fbf102a1677",
   "git_uncommitted_changes": true,
   "mps_available": false,
   "packages": {
-    "llmfp": "0.2.0",
+    "llmfp": "0.3.0",
     "numpy": "2.5.3",
     "torch": "2.14.1+cpu"
   },
   "platform": "Linux-7.0.0-31-generic-x86_64-with-glibc2.43",
   "python": "3.14.4",
-  "started_utc": "2026-10-02T16:00:25+00:00",
+  "started_utc": "2026-10-02T18:14:36+00:00",
   "torch_threads": 14
 }
 ```
@@ -822,8 +822,8 @@ python -m solutions.ch04_compare_runs --latest runs/ch04-counting-eval
 Observed output of the comparison:
 
 ```text
-A: runs/ch04-counting-eval/20261002-213029
-B: runs/ch04-counting-eval/20261002-213031
+A: runs/ch04-counting-eval/20261002-234439
+B: runs/ch04-counting-eval/20261002-234441
 
 config.json: 0 difference(s)
 
@@ -840,8 +840,8 @@ python -m solutions.ch04_compare_runs --latest runs/ch04-counting-eval
 ```
 
 ```text
-A: runs/ch04-counting-eval/20261002-213031
-B: runs/ch04-counting-eval/20261002-213033
+A: runs/ch04-counting-eval/20261002-234441
+B: runs/ch04-counting-eval/20261002-234443
 
 config.json: 1 difference(s)
   seed: 0 -> 1

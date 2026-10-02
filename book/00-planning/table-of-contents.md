@@ -137,7 +137,7 @@ File: [ch08-text-unicode-bytes-tokens.md](../part-2-text-to-inputs/ch08-text-uni
 - 8.9 Common mistakes, recap, concept checks, exercises, answers, checkpoint
 
 #### Chapter 9: Byte-Pair Encoding: Building a Subword Tokenizer (Capstone Project 1)
-Code: `code/llmfp/tokenizers/bpe.py`, `code/projects/p1_tokenizer/`
+File: [ch09-byte-pair-encoding.md](../part-2-text-to-inputs/ch09-byte-pair-encoding.md) · Code: `code/llmfp/tokenizers/bpe.py`, `code/scripts/ch09_*.py`, `code/projects/p1_tokenizer/`
 
 - 9.1 The problem: characters make sequences too long; words make vocabularies too big
 - 9.2 The BPE idea, worked by hand
@@ -149,6 +149,7 @@ Code: `code/llmfp/tokenizers/bpe.py`, `code/projects/p1_tokenizer/`
 - 9.8 Training your own tokenizer versus using an existing one; comparing against a published tokenizer
 - 9.9 How tokenization affects multilingual text, code, numbers, context length, and cost
 - 9.10 Capstone Project 1: build and test a tokenizer
+- 9.11 Common mistakes, recap, concept checks, exercises, answers, checkpoint
 
 #### Chapter 10: Embeddings and Position
 Code: `code/llmfp/model/embeddings.py`

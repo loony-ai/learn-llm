@@ -219,10 +219,10 @@ Observed output of the check on the test machine:
 Then `pytest -q`, from `code/` (the book's build also passes `-p no:cacheprovider`, which only stops pytest from writing a `.pytest_cache` folder):
 
 ```text
-@@RUN pytest -q -p no:cacheprovider@@
+@@RUN pytest -q -p no:cacheprovider tests/test_counting_lm.py tests/test_ch01_solutions.py tests/test_config.py tests/test_ch02_solutions.py@@
 ```
 
-The 51 tests include all of Chapter 1's tests, running unchanged under pytest, plus this chapter's.
+The 51 tests include all of Chapter 1's tests, running unchanged under pytest, plus this chapter's. (The command shown above lists this chapter's test files explicitly; a bare `pytest` runs every chapter's tests, so it reports more tests once you have later chapters' code.)
 
 #### The alternative: install from the lock file (Linux CPU only)
 
@@ -243,7 +243,7 @@ The `--index-url` and `--extra-index-url` lines inside the file make pip look on
 
 #### The project description: `pyproject.toml`
 
-File: [`code/pyproject.toml`](../../code/pyproject.toml)
+File: [`code/pyproject.toml`](../../code/pyproject.toml). The listing shows the file as it currently stands in the repository. Later chapters add dependencies, each pinned in the chapter that first needs it (Chapter 9 adds `tokenizers`), and the environment check and lock file grow accordingly.
 
 ```toml
 @@FILE code/pyproject.toml@@

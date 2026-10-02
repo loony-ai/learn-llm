@@ -106,9 +106,9 @@ print("Array memory      :", array_a.nbytes, "bytes =", array_a.nbytes // size, 
 Observed output (timings vary with the machine and from run to run):
 
 ```text
-Python list loop :    53.74 ms
-NumPy array op   :    17.44 ms
-Speed-up         : about 3x
+Python list loop :    49.16 ms
+NumPy array op   :    11.21 ms
+Speed-up         : about 4x
 Same results     : True [0.0, 2.0, 4.0]
 List element type : float | array element type: float64
 Array memory      : 8000000 bytes = 8 bytes per number
@@ -890,7 +890,7 @@ Memory just to hold the parameters of a model with 124 million parameters:
   torch.float32    473.0 MiB
   torch.bfloat16   236.5 MiB
 
-2048x2048 matrix multiplication on cpu: 85.4 ms
+2048x2048 matrix multiplication on cpu: 80.9 ms
 
 (Only the CPU is available, so the GPU comparison is skipped.)
 ```

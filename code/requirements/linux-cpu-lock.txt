@@ -1,10 +1,19 @@
 # Exact versions of every package in the tested environment (Linux x86_64, CPU-only).
-# Generated in Chapter 2 with: python -m pip freeze --exclude-editable
+# Generated with: python -m pip freeze --exclude-editable  (updated in Chapter 9)
 # Install with: python -m pip install -r requirements/linux-cpu-lock.txt
 --index-url https://download.pytorch.org/whl/cpu
 --extra-index-url https://pypi.org/simple
+anyio==4.15.1
+certifi==2026.7.22
+click==8.5.0
 filelock==3.32.3
 fsspec==2026.7.0
+h11==0.16.0
+hf-xet==1.6.0
+httpcore==1.0.9
+httpx==0.28.1
+huggingface_hub==1.33.0
+idna==3.20
 iniconfig==2.3.0
 Jinja2==3.1.6
 MarkupSafe==3.0.3
@@ -15,7 +24,10 @@ packaging==26.3
 pluggy==1.6.0
 Pygments==2.21.0
 pytest==9.1.1
+PyYAML==6.0.3
 setuptools==78.1.0
 sympy==1.14.0
+tokenizers==0.23.2
 torch==2.14.1+cpu
+tqdm==4.70.1
 typing_extensions==4.16.0

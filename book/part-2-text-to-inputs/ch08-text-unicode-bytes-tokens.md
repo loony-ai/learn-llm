@@ -1,6 +1,6 @@
 ## Chapter 8: Text, Unicode, Bytes, and the Need for Tokens
 
-[Back to index](../../README.md) · Previous: [Chapter 7](../part-1-foundations/ch07-project-0-char-model.md) · Next: Chapter 9 (planned)
+[Back to index](../../README.md) · Previous: [Chapter 7](../part-1-foundations/ch07-project-0-char-model.md) · Next: [Chapter 9](ch09-byte-pair-encoding.md)
 
 A model consumes integers. Text is not integers. Every language model therefore starts with a component that converts text into a sequence of integer IDs and back: the **tokenizer**. Chapter 1 split on words and lowercased everything. Chapter 7 used characters and refused any character it had not seen. Both were teaching shortcuts that would fail on real text: other languages, emoji, code, accented letters typed two different ways.
 
@@ -604,10 +604,11 @@ File: [`code/llmfp/tokenizers/__init__.py`](../../code/llmfp/tokenizers/__init__
 """
 
 from llmfp.tokenizers.base import Tokenizer, load_tokenizer, register, save_tokenizer
+from llmfp.tokenizers.bpe import BPETokenizer
 from llmfp.tokenizers.byte import ByteTokenizer
 from llmfp.tokenizers.char import CharTokenizer
 
-__all__ = ["Tokenizer", "CharTokenizer", "ByteTokenizer", "save_tokenizer", "load_tokenizer", "register"]
+__all__ = ["Tokenizer", "CharTokenizer", "ByteTokenizer", "BPETokenizer", "save_tokenizer", "load_tokenizer", "register"]
 ```
 
 (The listing mentions `bpe.py`, which Chapter 9 adds.)
@@ -822,4 +823,4 @@ You can now:
 - Choose between word, character, and byte units with measured trade-offs, and explain why subwords are the usual answer.
 - Implement tokenizers against a shared interface, save and load them, and test them with round trips on tricky and random text.
 
-**Next:** Chapter 9 builds a byte-level byte-pair encoding tokenizer, the kind used by GPT-style models, and compares it with a published one.
+**Next:** [Chapter 9](ch09-byte-pair-encoding.md) builds a byte-level byte-pair encoding tokenizer, the kind used by GPT-style models, and compares it with a published one.

@@ -4,7 +4,7 @@
 
 The ledger is the book's source of truth for what has been delivered, what depends on what, and what must be revisited. Update it with every chapter.
 
-**Last updated:** 2026-10-02, after Chapter 8.
+**Last updated:** 2026-10-02, after Chapter 9.
 
 ### 1. Completed chapters and outstanding sections
 
@@ -20,7 +20,8 @@ The ledger is the book's source of truth for what has been delivered, what depen
 | 7 Project 0: next-character predictor | Done | Sections 7.1–7.11 incl. project review (criteria, failure cases, debugging exercise, reviewer checklist, extensions), 6 exercises with answers |
 | **Part 1** | **Complete** | Chapters 1–7 |
 | 8 Text, Unicode, bytes, tokens | Done | Sections 8.1–8.9, 6 exercises with answers |
-| 9–45 | Not started | Next: Chapter 9 |
+| 9 Byte-pair encoding (Project 1) | Done | Sections 9.1–9.11 incl. project review; 6 exercises with answers |
+| 10–45 | Not started | Next: Chapter 10 |
 | Appendices A–G | Not started | The glossary will be seeded from the ledger's concept table |
 
 ### 2. Concepts introduced
@@ -149,6 +150,13 @@ Only concepts that have been *delivered* are listed. Planned locations are in th
 | Unknown token `<unk>` | 8.7 | CharTokenizer ID 0 | Ch 9.6 |
 | Abstract base class; registry decorator | 8.7 | `Tokenizer`, `@register` | — |
 | Round-trip property; property-based testing (named) | 8.8 | 200 random strings | Ch 9.10 |
+| Subword token; BPE; merge list; rank | 9.1–9.5 | Worked by hand + implemented | — |
+| Pre-tokenization; pattern design; coverage check | 9.3 | Stdlib approximation of GPT-2's pattern | — |
+| Reference implementation for testing optimized code | 9.4 | fast == reference test | Ch 17.6 |
+| Special tokens; injection risk; allowed_special | 9.6 | HF GPT-2 default behavior documented | Ch 11.7, 23.5, 36 |
+| Hugging Face Hub; pinned revision; local cache (introduced) | 9.8 | GPT-2 tokenizer 607a30d7… | Ch 23.3 |
+| Compression (characters per token) on held-out text | 9.8 | Ours vs GPT-2 vs bytes | Ch 24 |
+| Tokenization effects: multilingual, code, numbers, context, cost, vocab size | 9.9 | Measured | Ch 41.7 |
 
 ### 3. Prerequisites and unresolved dependencies
 
@@ -208,6 +216,12 @@ Only concepts that have been *delivered* are listed. Planned locations are in th
 | `code/examples/ch08/*.py` | Ch 8 | Executed | 3 teaching programs |
 | `code/data/tiny/multilingual.txt` | Ch 8 | — | Written for the book; illustrative translations |
 | `code/tests/test_tokenizers.py` | Ch 8 | 18 tests pass | — |
+| `code/llmfp/tokenizers/bpe.py` | Ch 9 | Tested | `PATTERN`, `pretokenize`, `merge_pair`, `train_merges`, `train_merges_reference`, `BPETokenizer` |
+| `code/scripts/ch09_build_corpus.py`, `ch09_train_bpe.py`, `ch09_compare_tokenizers.py` | Ch 9 | Executed | `BPEConfig`; GPT-2 pinned at 607a30d783dfa663caf39e06633721c8d4cfcd7e |
+| `code/data/tokenizer/corpus.txt`, `harbor-bpe-2048.json`, `data/tiny/harbor_synth_seed1.txt` | Ch 9 | Committed artifacts | — |
+| `code/projects/p1_tokenizer/README.md` | Ch 9 | — | Project 1 command list |
+| `code/solutions/ch09_vocab_sweep.py` | Ch 9 | Executed | — |
+| `code/tests/test_bpe.py`, `tests/__init__.py` | Ch 9 | 29 tests pass | — |
 | `code/llmfp/counting_lm.py` | Ch 1 | Tested | `START`, `END`, `CountingModelConfig`, `GenerationResult`, `split_into_words`, `join_words`, `rank_followers`, `CountingLanguageModel` (`train`, `context_for`, `followers_for`, `next_word_candidates`, `generate`, `num_parameters`, `num_contexts`, `vocabulary`, `save`, `load`), `read_lines` |
 | `code/scripts/__init__.py` | Ch 1 | — | Makes `scripts` importable as a package |
 | `code/scripts/ch01_counting_demo.py` | Ch 1 | Executed | CLI: `--data --context-size --prompt --samples --max-new-words --seed --checkpoint` |
@@ -224,6 +238,7 @@ Only concepts that have been *delivered* are listed. Planned locations are in th
 | Dependency | Needed from | Version used in testing | Latest on PyPI (checked 2026-10-02) | Pin status |
 |---|---|---|---|---|
 | Python | Ch 1 | 3.14.4 | — | Book requires 3.12+ (decided; see note) |
+| tokenizers | Ch 9 | 0.23.2 | 0.23.2 | **Pinned** `==0.23.2` (Ch 9); pulls huggingface_hub 1.33.0 (in lock) |
 | NumPy | Ch 3 | 2.5.3 (venv) | 2.5.3 (requires Python 3.12+) | **Pinned** `==2.5.3` (Ch 2) |
 | PyTorch (`torch`) | Ch 3 | 2.14.1+cpu (venv, CPU index) | 2.14.1 | **Pinned** `==2.14.1` (Ch 2). CPU index wheels exist for cp312–cp314; CUDA variants cu126/cu130/cu132 (checked 2026-10-02, untested) |
 | pytest | Ch 2 | 9.1.1 | 9.1.1 | **Pinned** `==9.1.1` in `dev` extra (Ch 2) |
@@ -280,6 +295,11 @@ Note: Chapter 1 code was written to need only Python 3.10+ features, but it was 
 | Ch 8 full test suite | `pytest` | 149 passed | 2026-10-02 |
 | Ch 8 Exercise 5 claims | One-off measurement | Answer updated to observed per-line unknowns | 2026-10-02 |
 | Audit of Ch 1–8 | `python3 tools/audit_chapters.py` | ok | 2026-10-02 |
+| Ch 9 full test suite | `pytest` | 178 passed | 2026-10-02 |
+| GPT-2 tokenizer download (Hub, pinned revision) | `ch09_compare_tokenizers` | Worked unauthenticated; cached under ~/.cache/huggingface | 2026-10-02 |
+| Ch 9 debugging-exercise claim | One-off regex check | Rewritten to the observed failure (newline/tab before a word) | 2026-10-02 |
+| Lock file regenerated with tokenizers | `pip freeze` | Not re-verified in a fresh venv this time | 2026-10-02 |
+| Audit of Ch 1–9 | `python3 tools/audit_chapters.py` | ok | 2026-10-02 |
 
 ### 7. Teaching simplifications to revisit
 
@@ -313,6 +333,8 @@ Note: Chapter 1 code was written to need only Python 3.10+ features, but it was 
 | Character tokens | 7.1 | Ch 8–9 (bytes, BPE) |
 | Fixed window, no attention | 7.3 | Part 3 |
 | Short-prompt padding with newlines as a start marker | 7.7 | Ch 9.6 (special tokens) |
+| Pre-tokenization pattern approximates GPT-2's (no `regex` module) | 9.3 | Extension 3 |
+| Tokenizer corpus is small and English-only | 9.8 | Ch 18 (real dataset) |
 | Model checkpoint without optimizer/RNG state | 7.8 | Ch 19.9 |
 
 ### 8. Open questions and decisions

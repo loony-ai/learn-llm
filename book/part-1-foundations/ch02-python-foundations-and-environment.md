@@ -218,7 +218,8 @@ Virtual env yes  (prefix: /home/sankar/ai/learn-llm/code/.venv)
 numpy       2.5.3          expected 2.5.3  ok
 torch       2.14.1+cpu     expected 2.14.1  ok
 pytest      9.1.1          expected 9.1.1  ok
-llmfp       0.2.0
+tokenizers  0.23.2         expected 0.23.2  ok
+llmfp       0.3.0
 torch CUDA  available=False  build=None
 torch MPS   available=False
 
@@ -228,12 +229,11 @@ All checks passed.
 Then `pytest -q`, from `code/` (the book's build also passes `-p no:cacheprovider`, which only stops pytest from writing a `.pytest_cache` folder):
 
 ```text
-........................................................................ [ 67%]
-..................................                                       [100%]
-106 passed in 1.49s
+...................................................                      [100%]
+51 passed in 0.07s
 ```
 
-The 51 tests include all of Chapter 1's tests, running unchanged under pytest, plus this chapter's.
+The 51 tests include all of Chapter 1's tests, running unchanged under pytest, plus this chapter's. (The command shown above lists this chapter's test files explicitly; a bare `pytest` runs every chapter's tests, so it reports more tests once you have later chapters' code.)
 
 #### The alternative: install from the lock file (Linux CPU only)
 
@@ -241,12 +241,21 @@ The file [`code/requirements/linux-cpu-lock.txt`](../../code/requirements/linux-
 
 ```text
 # Exact versions of every package in the tested environment (Linux x86_64, CPU-only).
-# Generated in Chapter 2 with: python -m pip freeze --exclude-editable
+# Generated with: python -m pip freeze --exclude-editable  (updated in Chapter 9)
 # Install with: python -m pip install -r requirements/linux-cpu-lock.txt
 --index-url https://download.pytorch.org/whl/cpu
 --extra-index-url https://pypi.org/simple
+anyio==4.15.1
+certifi==2026.7.22
+click==8.5.0
 filelock==3.32.3
 fsspec==2026.7.0
+h11==0.16.0
+hf-xet==1.6.0
+httpcore==1.0.9
+httpx==0.28.1
+huggingface_hub==1.33.0
+idna==3.20
 iniconfig==2.3.0
 Jinja2==3.1.6
 MarkupSafe==3.0.3
@@ -257,9 +266,12 @@ packaging==26.3
 pluggy==1.6.0
 Pygments==2.21.0
 pytest==9.1.1
+PyYAML==6.0.3
 setuptools==78.1.0
 sympy==1.14.0
+tokenizers==0.23.2
 torch==2.14.1+cpu
+tqdm==4.70.1
 typing_extensions==4.16.0
 ```
 
@@ -274,7 +286,7 @@ The `--index-url` and `--extra-index-url` lines inside the file make pip look on
 
 #### The project description: `pyproject.toml`
 
-File: [`code/pyproject.toml`](../../code/pyproject.toml)
+File: [`code/pyproject.toml`](../../code/pyproject.toml). The listing shows the file as it currently stands in the repository. Later chapters add dependencies, each pinned in the chapter that first needs it (Chapter 9 adds `tokenizers`), and the environment check and lock file grow accordingly.
 
 ```toml
 # Package metadata and dependencies for the book's companion code.
@@ -288,7 +300,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "llmfp"
-version = "0.2.0"
+version = "0.3.0"
 description = "Companion code for 'Large Language Models From First Principles'"
 readme = "README.md"
 requires-python = ">=3.12"
@@ -296,6 +308,7 @@ requires-python = ">=3.12"
 dependencies = [
     "numpy==2.5.3",
     "torch==2.14.1",
+    "tokenizers==0.23.2",   # Chapter 9: Hugging Face tokenizers, to compare with published tokenizers
 ]
 
 [project.optional-dependencies]
@@ -1387,9 +1400,9 @@ python -m scripts.ch02_train_counting
 Observed output:
 
 ```text
-2026-10-02 21:29:58,216 INFO    ch02_train_counting: Config: CountingRunConfig(data='data/tiny/harbor.txt', checkpoint='runs/ch02/counting_model.json', seed=0, samples=3, prompt='the keeper', model=CountingModelConfig(context_size=2, lowercase=True))
-2026-10-02 21:29:58,217 INFO    ch02_train_counting: Trained on 40 lines: 359 observations, 226 parameters
-2026-10-02 21:29:58,218 INFO    ch02_train_counting: Saved checkpoint to runs/ch02/counting_model.json and config to runs/ch02/counting_model.config.json
+2026-10-02 23:44:12,046 INFO    ch02_train_counting: Config: CountingRunConfig(data='data/tiny/harbor.txt', checkpoint='runs/ch02/counting_model.json', seed=0, samples=3, prompt='the keeper', model=CountingModelConfig(context_size=2, lowercase=True))
+2026-10-02 23:44:12,047 INFO    ch02_train_counting: Trained on 40 lines: 359 observations, 226 parameters
+2026-10-02 23:44:12,048 INFO    ch02_train_counting: Saved checkpoint to runs/ch02/counting_model.json and config to runs/ch02/counting_model.config.json
 Sample 1: the keeper wrote the time in the lamp went dark during the storm broke the old pier.  [end_marker]
 Sample 2: the keeper wrote the weather in the wind turned the old pier creaked in the lamp went dark during the storm in  [max_new_words]
 Sample 3: the keeper lit the lamp.  [end_marker]
@@ -1499,7 +1512,7 @@ import site
 import sys
 
 MIN_PYTHON = (3, 12)
-EXPECTED = {"numpy": "2.5.3", "torch": "2.14.1", "pytest": "9.1.1"}
+EXPECTED = {"numpy": "2.5.3", "torch": "2.14.1", "pytest": "9.1.1", "tokenizers": "0.23.2"}
 
 
 def installed_version(package: str) -> str | None:
@@ -1635,6 +1648,7 @@ Virtual env NO  (prefix: /usr)
 numpy       2.5.1          expected 2.5.3  MISMATCH
 torch       2.13.0+cpu     expected 2.14.1  MISMATCH
 pytest      9.1.1          expected 9.1.1  ok
+tokenizers  0.22.2         expected 0.23.2  MISMATCH
 llmfp       NOT INSTALLED
 torch CUDA  available=False  build=None
 torch MPS   available=False
@@ -1643,6 +1657,7 @@ Problems found:
   - not running inside a virtual environment
   - numpy: found 2.5.1, expected 2.5.3
   - torch: found 2.13.0+cpu, expected 2.14.1
+  - tokenizers: found 0.22.2, expected 0.23.2
   - llmfp is not installed; run: python -m pip install -e ".[dev]"
 ```
 

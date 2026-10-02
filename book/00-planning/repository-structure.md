@@ -57,7 +57,7 @@ code/
 │   │   ├── base.py                #   Tokenizer protocol: encode, decode, vocab_size, save, load
 │   │   ├── __init__.py            #   Ch 8  exports; save_tokenizer/load_tokenizer
 │   │   ├── char.py, byte.py       #   Ch 8  CharTokenizer (with <unk> = 0), ByteTokenizer (256 IDs)
-│   │   └── bpe.py                 #   Ch 9
+│   │   └── bpe.py                 #   Ch 9  BPETokenizer.train/encode(allowed_special=)/decode/token_text; train_merges (+ reference)
 │   ├── data/                      # Ch 11, 18
 │   │   ├── windows.py             #   sliding-window next-token dataset
 │   │   ├── collate.py             #   padding, masks, packing
@@ -100,7 +100,10 @@ code/
 │   ├── ch06_train_band.py         # Ch 6  config-driven training with baselines and run records
 │   ├── ch06_learning_rates.py     # Ch 6  learning-rate sweep
 │   ├── ch07_train_char_model.py   # Ch 7  Project 0: train, compare, checkpoint, sample, overfit-one-batch mode
-│   └── ch08_compare_units.py      # Ch 8  words vs characters vs bytes
+│   ├── ch08_compare_units.py      # Ch 8  words vs characters vs bytes
+│   ├── ch09_build_corpus.py       # Ch 9  fixed tokenizer corpus (harbor + Part 1 sources + code)
+│   ├── ch09_train_bpe.py          # Ch 9  train + save the Project 1 tokenizer
+│   └── ch09_compare_tokenizers.py # Ch 9  ours vs GPT-2 (pinned revision) vs bytes
 ├── tests/                         # pytest-compatible tests, mirroring llmfp/
 │   ├── test_counting_lm.py        # Ch 1
 │   ├── test_ch01_solutions.py     # Ch 1 exercise solutions
@@ -114,7 +117,9 @@ code/
 │   ├── test_ch05_solutions.py     # Ch 5 exercise solutions
 │   ├── test_training_basics.py    # Ch 6 (+ Ch 6 accumulation solution)
 │   ├── test_char_model.py         # Ch 7 (+ Ch 7 solutions)
-│   └── test_tokenizers.py         # Ch 8
+│   ├── __init__.py                # Ch 9  makes tests importable as a package (shared fixtures)
+│   ├── test_tokenizers.py         # Ch 8
+│   └── test_bpe.py                # Ch 9
 ├── solutions/                     # Suggested exercise solutions: chNN_<exercise>.py
 │   ├── ch01_backoff.py            # Ch 1, Exercise 5
 │   ├── ch01_memorization.py       # Ch 1, Exercise 6
@@ -127,23 +132,29 @@ code/
 │   ├── ch06_accumulated_step.py   # Ch 6, Exercise 4
 │   ├── ch07_context_sweep.py      # Ch 7, Exercise 1
 │   ├── ch07_off_by_one.py         # Ch 7, Exercise 4
-│   └── ch07_fact_check.py         # Ch 7, Exercise 5
+│   ├── ch07_fact_check.py         # Ch 7, Exercise 5
+│   └── ch09_vocab_sweep.py        # Ch 9, Exercise 3
 ├── examples/                      # Small standalone teaching programs: examples/chNN/*.py
 │   ├── ch02/                      # Ch 2  collections, functions, classes, generators, files, pytest failure demo
 │   ├── ch03/                      # Ch 3  arrays, shapes, dtypes, indexing, reshaping, broadcasting, reductions, batching
 │   ├── ch04/                      # Ch 4  seeds, set-order nondeterminism
 │   ├── ch05/                      # Ch 5  unit, linear layer, activations, modules, softmax
 │   ├── ch06/                      # Ch 6  cross-entropy, nudging, autograd, optimizers, accumulation, modes
-│   └── ch08/                      # Ch 8  Unicode, UTF-8 bytes, normalization
+│   ├── ch08/                      # Ch 8  Unicode, UTF-8 bytes, normalization
+│   └── ch09/                      # Ch 9  BPE by hand
 ├── configs/                       # TOML experiment configs (<purpose>-cpu.toml, <purpose>-gpu.toml)
 │   ├── counting-cpu.toml          # Ch 2
 │   ├── counting-eval-cpu.toml     # Ch 4
 │   ├── band-cpu.toml              # Ch 6
-│   └── char-model-cpu.toml        # Ch 7
+│   ├── char-model-cpu.toml        # Ch 7
+│   └── bpe-cpu.toml               # Ch 9
 ├── data/
 │   ├── tiny/harbor.txt            # Ch 1: 40 original sentences (written for this book)
 │   ├── tiny/harbor_synth.txt      # Ch 4: 3000 generated sentences, 1024 distinct (seed 0)
 │   ├── tiny/multilingual.txt      # Ch 8: 11 lines, 9 scripts + emoji + code (written for this book)
+│   ├── tiny/harbor_synth_seed1.txt # Ch 9: 1000 held-out harbor sentences (seed 1)
+│   ├── tokenizer/corpus.txt       # Ch 9: fixed 520k-character tokenizer corpus (sha256 38b7158e...)
+│   ├── tokenizer/harbor-bpe-2048.json # Ch 9: trained Project 1 tokenizer (used by Ch 10-11)
 │   ├── handbook/                  # Ch 33: original Harbor Handbook (planned)
 │   └── downloads/                 # Ch 18: fetched datasets (not committed)
 ├── projects/                      # Capstones: README, scripts, eval sets, checklists
@@ -168,6 +179,7 @@ These signatures are promises. A later chapter may *add* parameters with default
 | Basic training | Ch 6 | `train_step(model, inputs, targets, loss_fn, optimizer) -> float`; `evaluate(model, inputs, targets, loss_fn, batch_size=1024) -> {loss, accuracy}`; `fit(model, train_data, validation_data, loss_fn, optimizer, epochs, batch_size, seed=0) -> history` |
 | Character model | Ch 7 | `CharVocabulary.build(text)`, `.encode`, `.decode`; `make_examples(ids, context_size) -> (contexts, targets)`; `CharMLP(CharModelConfig(vocab_size, context_size=8, hidden=128))`; `sample_text(model, vocab, prompt, length, generator=None, greedy=False)`; `save_checkpoint(dir, model, vocab, extra)` / `load_checkpoint(dir, device)` |
 | `Tokenizer` (abstract base class) | Ch 8 | `.encode(text) -> list[int]`, `.decode(ids) -> str`, `.vocab_size`, `.to_dict()`, `.from_dict(data)`, `.round_trips(text)`; files via `save_tokenizer(tok, path)` / `load_tokenizer(path)` (correction: the plan said `.save`/`.load` methods; module functions with a registry were chosen instead) |
+| BPE tokenizer | Ch 9 | `BPETokenizer.train(text, vocab_size, special_tokens=(), pattern=PATTERN, min_count=2)`; `.encode(text, *, allowed_special=())`; `.special_tokens` dict; `.token_text(id)` |
 | `GPTConfig` | Ch 12 | dataclass: `vocab_size, context_length, d_model, n_heads, n_layers, dropout, ...` |
 | `GPT.forward` | Ch 16 | `(token_ids[B, T], attention_mask=None, kv_cache=None) -> logits[B, T, vocab_size]` |
 | `generate` | Ch 17 | `generate(model, token_ids, max_new_tokens, decoding=DecodingConfig(), stop_ids=())` |

@@ -498,7 +498,7 @@ python -m scripts.ch07_train_char_model
 Observed output (under 10 seconds on the test machine):
 
 ```text
-Run: runs/ch07-char-model/20261002-233443   device: cpu (14 threads used by PyTorch)
+Run: runs/ch07-char-model/20261002-234552   device: cpu (14 threads used by PyTorch)
 Vocabulary: 29 characters '\n .ABITabcdefghiklmnoprstuwxy'
 Examples: 44,367 training, 6,031 validation (context 12 characters)
 Parameters: 48,413
@@ -522,7 +522,7 @@ Validation accuracy by whether the counting model had seen the context:
   seen contexts    ( 5922 examples): network 91.5%, counting 91.7%
   unseen contexts  (  109 examples): network 97.2%, counting 0.0%
 
-Saved to runs/ch07-char-model/20261002-233443/checkpoint; reloaded model gives identical outputs: True
+Saved to runs/ch07-char-model/20261002-234552/checkpoint; reloaded model gives identical outputs: True
 Greedy : 'The keeper wrote in the log at dusk.\nThe fishers unloaded the boats and'
 Sample 1: 'The keeper rang the bell and watched the boats and cleaned the glass be'
 Sample 2: 'The keeper rangaten bellawroce d the sky and unloaded the boats.\nThe ch'

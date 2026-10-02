@@ -9,7 +9,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "llmfp"
-version = "0.2.0"
+version = "0.3.0"
 description = "Companion code for 'Large Language Models From First Principles'"
 readme = "README.md"
 requires-python = ">=3.12"
@@ -17,6 +17,7 @@ requires-python = ">=3.12"
 dependencies = [
     "numpy==2.5.3",
     "torch==2.14.1",
+    "tokenizers==0.23.2",   # Chapter 9: Hugging Face tokenizers, to compare with published tokenizers
 ]
 
 [project.optional-dependencies]

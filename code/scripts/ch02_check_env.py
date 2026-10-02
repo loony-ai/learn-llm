@@ -15,7 +15,7 @@ import site
 import sys
 
 MIN_PYTHON = (3, 12)
-EXPECTED = {"numpy": "2.5.3", "torch": "2.14.1", "pytest": "9.1.1"}
+EXPECTED = {"numpy": "2.5.3", "torch": "2.14.1", "pytest": "9.1.1", "tokenizers": "0.23.2"}
 
 
 def installed_version(package: str) -> str | None:

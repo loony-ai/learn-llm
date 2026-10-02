@@ -9,7 +9,8 @@
 """
 
 from llmfp.tokenizers.base import Tokenizer, load_tokenizer, register, save_tokenizer
+from llmfp.tokenizers.bpe import BPETokenizer
 from llmfp.tokenizers.byte import ByteTokenizer
 from llmfp.tokenizers.char import CharTokenizer
 
-__all__ = ["Tokenizer", "CharTokenizer", "ByteTokenizer", "save_tokenizer", "load_tokenizer", "register"]
+__all__ = ["Tokenizer", "CharTokenizer", "ByteTokenizer", "BPETokenizer", "save_tokenizer", "load_tokenizer", "register"]
