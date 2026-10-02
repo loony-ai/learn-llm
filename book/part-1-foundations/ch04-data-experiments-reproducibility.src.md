@@ -1,6 +1,6 @@
 ## Chapter 4: Data, Experiments, and Reproducibility
 
-[Back to index](../../README.md) · Previous: [Chapter 3](ch03-tensors.md) · Next: Chapter 5 (planned)
+[Back to index](../../README.md) · Previous: [Chapter 3](ch03-tensors.md) · Next: [Chapter 5](ch05-neural-networks.md)
 
 Every claim you make about a model is a claim about an experiment: "context size 4 works better", "this fine-tune improved accuracy", "the new prompt reduces errors". Machine learning makes it unusually easy to fool yourself. The model may have seen the test answers during training. A lucky random split may flatter one setting. Two runs you are comparing may differ in ways you forgot. This chapter is about the discipline that keeps results honest: how data is divided, how evaluation data leaks, what overfitting looks like when you measure it, and how to record runs so that you, or anyone else, can repeat them.
 
@@ -495,4 +495,4 @@ You can now:
 - Record every run with configuration, environment, code version, data fingerprints, metrics, and logs, and compare two runs precisely.
 - Judge whether a measured difference is larger than the variation caused by irrelevant changes.
 
-**Next:** Chapter 5 replaces the count table with a neural network: an adjustable function that can produce scores for contexts it has never seen.
+**Next:** [Chapter 5](ch05-neural-networks.md) replaces the count table with a neural network: an adjustable function that can produce scores for contexts it has never seen.

@@ -49,7 +49,7 @@ code/
 │   ├── experiment.py              # Ch 4  set_seed, start_run/finish_run, environment capture, file_sha256
 │   ├── splits.py                  # Ch 4  shuffle_split, hash_split, deduplicate, count_overlap
 │   ├── counting_eval.py           # Ch 4  accuracy and coverage of the counting model
-│   ├── nn_basics.py               # Ch 5  small modules used to teach layers
+│   ├── nn_basics.py               # Ch 5  TinyMLP, ACTIVATIONS, count_parameters, parameter_table, shape_trace
 │   ├── training_basics.py         # Ch 6  minimal training loop
 │   ├── char_model.py              # Ch 7  next-character network
 │   ├── tokenizers/                # Ch 8-9
@@ -93,7 +93,8 @@ code/
 │   ├── ch02_train_counting.py     # Ch 2  config-driven training of the counting model
 │   ├── ch03_tensor_tour.py        # Ch 3  devices, memory estimates, matmul timing
 │   ├── ch04_make_harbor_corpus.py # Ch 4  deterministic synthetic corpus (3000 sentences)
-│   └── ch04_evaluate_counting.py  # Ch 4  splits, leakage, overfitting, run records
+│   ├── ch04_evaluate_counting.py  # Ch 4  splits, leakage, overfitting, run records
+│   └── ch05_untrained_network.py  # Ch 5  parameter table, shape trace, untrained scores
 ├── tests/                         # pytest-compatible tests, mirroring llmfp/
 │   ├── test_counting_lm.py        # Ch 1
 │   ├── test_ch01_solutions.py     # Ch 1 exercise solutions
@@ -102,18 +103,22 @@ code/
 │   ├── test_devices.py            # Ch 3
 │   ├── test_ch03_solutions.py     # Ch 3 exercise solutions
 │   ├── test_splits.py             # Ch 4
-│   └── test_experiment.py         # Ch 4 (experiment + counting_eval)
+│   ├── test_experiment.py         # Ch 4 (experiment + counting_eval)
+│   ├── test_nn_basics.py          # Ch 5
+│   └── test_ch05_solutions.py     # Ch 5 exercise solutions
 ├── solutions/                     # Suggested exercise solutions: chNN_<exercise>.py
 │   ├── ch01_backoff.py            # Ch 1, Exercise 5
 │   ├── ch01_memorization.py       # Ch 1, Exercise 6
 │   ├── ch02_iter_sentences.py     # Ch 2, Exercise 4
 │   ├── ch03_pad_and_stack.py      # Ch 3, Exercise 5
 │   ├── ch04_seed_spread.py        # Ch 4, Exercise 3
-│   └── ch04_compare_runs.py       # Ch 4, Exercise 4
+│   ├── ch04_compare_runs.py       # Ch 4, Exercise 4
+│   └── ch05_two_bands.py          # Ch 5, Exercise 6
 ├── examples/                      # Small standalone teaching programs: examples/chNN/*.py
 │   ├── ch02/                      # Ch 2  collections, functions, classes, generators, files, pytest failure demo
 │   ├── ch03/                      # Ch 3  arrays, shapes, dtypes, indexing, reshaping, broadcasting, reductions, batching
-│   └── ch04/                      # Ch 4  seeds, set-order nondeterminism
+│   ├── ch04/                      # Ch 4  seeds, set-order nondeterminism
+│   └── ch05/                      # Ch 5  unit, linear layer, activations, modules, softmax
 ├── configs/                       # TOML experiment configs (<purpose>-cpu.toml, <purpose>-gpu.toml)
 │   ├── counting-cpu.toml          # Ch 2
 │   └── counting-eval-cpu.toml     # Ch 4
@@ -140,6 +145,7 @@ These signatures are promises. A later chapter may *add* parameters with default
 | Device selection | Ch 3 | `pick_device(preference="auto") -> torch.device`; every PyTorch script takes `--device auto\|cpu\|cuda\|mps` via `add_device_argument` |
 | Experiment records | Ch 4 | `set_seed(seed)`; `start_run(root, name, config, data_files=()) -> Path`; `finish_run(run_dir, metrics)`; run dir holds config.json, environment.json, metrics.json, log.txt |
 | Splitting | Ch 4 | `hash_split(items, fractions=(0.8,0.1,0.1), key=str, salt="") -> Splits`; `shuffle_split(items, fractions, seed)`; `deduplicate`; `count_overlap` |
+| Network inspection | Ch 5 | `TinyMLP(in, hidden, out, activation="relu")`; `count_parameters(module, trainable_only=False)`; `format_parameter_table(module)`; `shape_trace(module, *inputs) -> [(name, shape)]` |
 | `Tokenizer` protocol | Ch 8 | `.encode(text) -> list[int]`, `.decode(ids) -> str`, `.vocab_size`, `.save(path)`, `.load(path)` |
 | `GPTConfig` | Ch 12 | dataclass: `vocab_size, context_length, d_model, n_heads, n_layers, dropout, ...` |
 | `GPT.forward` | Ch 16 | `(token_ids[B, T], attention_mask=None, kv_cache=None) -> logits[B, T, vocab_size]` |

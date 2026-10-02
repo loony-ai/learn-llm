@@ -1,6 +1,6 @@
 ## Chapter 4: Data, Experiments, and Reproducibility
 
-[Back to index](../../README.md) · Previous: [Chapter 3](ch03-tensors.md) · Next: Chapter 5 (planned)
+[Back to index](../../README.md) · Previous: [Chapter 3](ch03-tensors.md) · Next: [Chapter 5](ch05-neural-networks.md)
 
 Every claim you make about a model is a claim about an experiment: "context size 4 works better", "this fine-tune improved accuracy", "the new prompt reduces errors". Machine learning makes it unusually easy to fool yourself. The model may have seen the test answers during training. A lucky random split may flatter one setting. Two runs you are comparing may differ in ways you forgot. This chapter is about the discipline that keeps results honest: how data is divided, how evaluation data leaks, what overfitting looks like when you measure it, and how to record runs so that you, or anyone else, can repeat them.
 
@@ -397,7 +397,7 @@ python -m scripts.ch04_evaluate_counting --set split=shuffle --set deduplicate=f
 Observed output:
 
 ```text
-Run: runs/ch04-counting-eval/20261002-212434
+Run: runs/ch04-counting-eval/20261002-213021
 Data: data/tiny/harbor_synth.txt (1024 distinct sentences)
 Split: shuffle, deduplicate=False, sizes={'train': 2400, 'validation': 300, 'test': 300}
 Validation sentences that also appear in training: 245 of 300
@@ -419,7 +419,7 @@ python -m scripts.ch04_evaluate_counting
 Observed output:
 
 ```text
-Run: runs/ch04-counting-eval/20261002-212436
+Run: runs/ch04-counting-eval/20261002-213024
 Data: data/tiny/harbor_synth.txt (1024 distinct sentences)
 Split: hash, deduplicate=True, sizes={'train': 824, 'validation': 112, 'test': 88}
 Validation sentences that also appear in training: 0 of 112
@@ -468,7 +468,7 @@ python -m scripts.ch04_evaluate_counting --set evaluate_test=true --set "context
 ```
 
 ```text
-Run: runs/ch04-counting-eval/20261002-212438
+Run: runs/ch04-counting-eval/20261002-213025
 Data: data/tiny/harbor_synth.txt (1024 distinct sentences)
 Split: hash, deduplicate=True, sizes={'train': 824, 'validation': 112, 'test': 88}
 Validation sentences that also appear in training: 0 of 112
@@ -584,9 +584,9 @@ Observed output (the first three lines will differ every time you run it):
 
 ```text
 Three fresh processes, default settings:
-   ['fog', 'gulls', 'pier', 'lamp', 'keeper', 'boats']
-   ['keeper', 'gulls', 'fog', 'lamp', 'pier', 'boats']
-   ['gulls', 'pier', 'keeper', 'lamp', 'fog', 'boats']
+   ['pier', 'keeper', 'lamp', 'fog', 'gulls', 'boats']
+   ['gulls', 'pier', 'lamp', 'boats', 'keeper', 'fog']
+   ['pier', 'keeper', 'gulls', 'lamp', 'fog', 'boats']
 Three fresh processes with PYTHONHASHSEED=0:
    ['gulls', 'pier', 'lamp', 'fog', 'boats', 'keeper']
    ['gulls', 'pier', 'lamp', 'fog', 'boats', 'keeper']
@@ -792,7 +792,7 @@ cat runs/ch04-counting-eval/<run>/environment.json
     "data/tiny/harbor_synth.txt": "a412d79eebbab1d251fe06d83844a77cba91e15041f6786526f48b437c2650f7"
   },
   "executable": "/home/sankar/ai/learn-llm/code/.venv/bin/python",
-  "git_commit": "8b9082d196b4cc89aa4f67ab854460dc5b5e2afd",
+  "git_commit": "b76e8c1e44fe3ec5e1cf6f1eae08cd54b8745d61",
   "git_uncommitted_changes": true,
   "mps_available": false,
   "packages": {
@@ -802,7 +802,7 @@ cat runs/ch04-counting-eval/<run>/environment.json
   },
   "platform": "Linux-7.0.0-31-generic-x86_64-with-glibc2.43",
   "python": "3.14.4",
-  "started_utc": "2026-10-02T15:54:38+00:00",
+  "started_utc": "2026-10-02T16:00:25+00:00",
   "torch_threads": 14
 }
 ```
@@ -822,8 +822,8 @@ python -m solutions.ch04_compare_runs --latest runs/ch04-counting-eval
 Observed output of the comparison:
 
 ```text
-A: runs/ch04-counting-eval/20261002-212441
-B: runs/ch04-counting-eval/20261002-212443
+A: runs/ch04-counting-eval/20261002-213029
+B: runs/ch04-counting-eval/20261002-213031
 
 config.json: 0 difference(s)
 
@@ -840,8 +840,8 @@ python -m solutions.ch04_compare_runs --latest runs/ch04-counting-eval
 ```
 
 ```text
-A: runs/ch04-counting-eval/20261002-212443
-B: runs/ch04-counting-eval/20261002-212445
+A: runs/ch04-counting-eval/20261002-213031
+B: runs/ch04-counting-eval/20261002-213033
 
 config.json: 1 difference(s)
   seed: 0 -> 1
@@ -996,4 +996,4 @@ You can now:
 - Record every run with configuration, environment, code version, data fingerprints, metrics, and logs, and compare two runs precisely.
 - Judge whether a measured difference is larger than the variation caused by irrelevant changes.
 
-**Next:** Chapter 5 replaces the count table with a neural network: an adjustable function that can produce scores for contexts it has never seen.
+**Next:** [Chapter 5](ch05-neural-networks.md) replaces the count table with a neural network: an adjustable function that can produce scores for contexts it has never seen.

@@ -55,7 +55,7 @@ Each required topic from the book specification and the section that covers it. 
 | CPU, GPU, RAM, VRAM, hardware constraints | 3.11–3.12 | ✓ (GPU branch not executed) |
 | Reproducibility, seeds, configuration, experiment records | 2.9 (configuration), 4.6–4.8 | ✓ |
 | Datasets, examples, labels, splits, leakage, overfitting | 4.2–4.5 | ✓ |
-| Neural networks through behavior and code | Chapter 5 | |
+| Neural networks through behavior and code | Chapter 5 | ✓ |
 | Forward pass, loss, backward pass, autodiff, gradients, optimizers, learning rates, training loops | Chapter 6 | |
 | Gradient accumulation vs accidental accumulation | 6.8 | |
 | Evaluation mode, training mode, disabling gradient tracking | 6.9 | |

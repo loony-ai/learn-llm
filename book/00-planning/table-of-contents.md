@@ -77,7 +77,7 @@ File: [ch04-data-experiments-reproducibility.md](../part-1-foundations/ch04-data
 - 4.10 Common mistakes, recap, concept checks, exercises, answers, checkpoint
 
 #### Chapter 5: Neural Networks Through Behavior and Code
-Code: `code/llmfp/nn_basics.py`
+File: [ch05-neural-networks.md](../part-1-foundations/ch05-neural-networks.md) · Code: `code/llmfp/nn_basics.py`, `code/scripts/ch05_untrained_network.py`, `code/examples/ch05/`
 
 - 5.1 The problem: a count table cannot handle contexts it never saw
 - 5.2 A single unit: an adjustable scoring rule, in code
@@ -87,6 +87,7 @@ Code: `code/llmfp/nn_basics.py`
 - 5.6 Counting and inspecting parameters
 - 5.7 Scores (logits) and turning them into a ranked choice (softmax, described by behavior)
 - 5.8 A network as a function from tensors to tensors: tracking shapes
+- 5.9 Common mistakes, recap, concept checks, exercises, answers, checkpoint
 
 #### Chapter 6: How Training Works: Loss, Gradients, and Optimizers
 Code: `code/llmfp/training_basics.py`

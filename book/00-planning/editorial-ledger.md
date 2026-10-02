@@ -4,7 +4,7 @@
 
 The ledger is the book's source of truth for what has been delivered, what depends on what, and what must be revisited. Update it with every chapter.
 
-**Last updated:** 2026-10-02, after Chapter 4.
+**Last updated:** 2026-10-02, after Chapter 5.
 
 ### 1. Completed chapters and outstanding sections
 
@@ -15,7 +15,8 @@ The ledger is the book's source of truth for what has been delivered, what depen
 | 2 Python foundations and your working environment | Done | Sections 2.1–2.13 (2.13 added for recap/exercises), 6 exercises with answers |
 | 3 Tensors | Done | Sections 3.1–3.14 (3.14 added for recap/exercises), 6 exercises with answers |
 | 4 Data, experiments, reproducibility | Done | Sections 4.1–4.10 (4.9 retitled; 4.10 added), 6 exercises with answers |
-| 5–45 | Not started | Next: Chapter 5 |
+| 5 Neural networks through behavior and code | Done | Sections 5.1–5.9, 6 exercises with answers |
+| 6–45 | Not started | Next: Chapter 6 |
 | Appendices A–G | Not started | The glossary will be seeded from the ledger's concept table |
 
 ### 2. Concepts introduced
@@ -100,6 +101,20 @@ Only concepts that have been *delivered* are listed. Planned locations are in th
 | GPU nondeterminism; deterministic algorithms (named) | 4.6 | Not executed | Ch 19 |
 | Experiment record; environment capture; data fingerprint | 4.8 | `start_run`/`finish_run` | Ch 19, 41.5 |
 | Judging differences by repeated measurement with irrelevant variation | 4.9 | Salt spread | Ch 37.7 |
+| Neural network (brain analogy explicitly disclaimed) | 5.1 | — | — |
+| Unit/neuron; weight; bias | 5.2 | Hand-set urgency scorer | Ch 6 |
+| Linear layer; weight shape (out, in); last-axis application | 5.3 | Loop vs layer vs `@` | Ch 15.2, 22.4 |
+| Matrix multiplication (by behavior) | 5.3 | Multiply matching positions and add up, for all pairs | Ch 13 |
+| Linearity (observed: equal steps; stacks merge) | 5.4 | Demonstrated + tested | — |
+| Activation function; ReLU, GELU, tanh, sigmoid | 5.4 | Output table | Ch 15.2 (GELU, gated) |
+| Approximation ability (stated without proof, limits noted) | 5.4 | — | — |
+| Hidden layer; MLP | 5.4 | TinyMLP | Ch 15.2 |
+| `nn.Module` rules; `forward`; `nn.Sequential`; `requires_grad` (named) | 5.5 | 5 rules | Ch 6.5 |
+| Parameter counting; output layer size | 5.6 | 3,250 params example | Ch 16.6 |
+| Initialization; symmetry breaking | 5.6 | Seeds | Ch 16.4 |
+| Logits; softmax (by behavior); calibration (named) | 5.7 | Shift invariance, gap effect, axis | Ch 6.2, 21.4, 38.4 |
+| Forward hook; shape trace | 5.8 | `shape_trace` | Ch 16.7 |
+| `torch.no_grad()` (used, explanation deferred) | 5.8 | — | Ch 6.9 |
 
 ### 3. Prerequisites and unresolved dependencies
 
@@ -139,6 +154,11 @@ Only concepts that have been *delivered* are listed. Planned locations are in th
 | `code/scripts/ch04_evaluate_counting.py` | Ch 4 | Executed | `EvalConfig`; `configs/counting-eval-cpu.toml` |
 | `code/solutions/ch04_seed_spread.py`, `ch04_compare_runs.py` | Ch 4 | Executed | — |
 | `code/tests/test_splits.py`, `test_experiment.py` | Ch 4 | 21 tests pass | — |
+| `code/llmfp/nn_basics.py` | Ch 5 | Tested | `ACTIVATIONS`, `TinyMLP`, `count_parameters`, `ParameterInfo`, `parameter_table`, `format_parameter_table`, `shape_trace` |
+| `code/scripts/ch05_untrained_network.py` | Ch 5 | Executed | CLI `--data --context-features --hidden --batch --seed --device` |
+| `code/examples/ch05/*.py` | Ch 5 | Executed | 6 teaching programs |
+| `code/solutions/ch05_two_bands.py` | Ch 5 | Tested, executed | `build_two_band_network(centers, width)` |
+| `code/tests/test_nn_basics.py`, `test_ch05_solutions.py` | Ch 5 | 13 tests pass | — |
 | `code/llmfp/counting_lm.py` | Ch 1 | Tested | `START`, `END`, `CountingModelConfig`, `GenerationResult`, `split_into_words`, `join_words`, `rank_followers`, `CountingLanguageModel` (`train`, `context_for`, `followers_for`, `next_word_candidates`, `generate`, `num_parameters`, `num_contexts`, `vocabulary`, `save`, `load`), `read_lines` |
 | `code/scripts/__init__.py` | Ch 1 | — | Makes `scripts` importable as a package |
 | `code/scripts/ch01_counting_demo.py` | Ch 1 | Executed | CLI: `--data --context-size --prompt --samples --max-new-words --seed --checkpoint` |
@@ -197,6 +217,9 @@ Note: Chapter 1 code was written to need only Python 3.10+ features, but it was 
 | Ch 4 evaluation runs, reproducibility check, seed spread | Via `@@RUN@@` | Identical reruns showed 0 differences | 2026-10-02 |
 | Ch 4 Exercises 2 and 6 claims | Scratch scripts (not in repo) | Numbers quoted in answers as the author's run | 2026-10-02 |
 | Audit of Ch 1–4 | `python3 tools/audit_chapters.py` | ok | 2026-10-02 |
+| Ch 5 full test suite | `pytest` | 106 passed | 2026-10-02 |
+| Ch 5 answer numbers (counts, softmax values) | Checked in a one-off command | Match the text | 2026-10-02 |
+| Audit of Ch 1–5 | `python3 tools/audit_chapters.py` | ok | 2026-10-02 |
 
 ### 7. Teaching simplifications to revisit
 
@@ -220,6 +243,8 @@ Note: Chapter 1 code was written to need only Python 3.10+ features, but it was 
 | Config validation passes lists through unchecked | 4.7 | Extend `_check_type` if later configs need it |
 | Exact-duplicate dedup only | 4.4 | Ch 18.5 near-duplicates |
 | Variation judged by spread across salts, no statistics | 4.9 | Ch 37.7 |
+| Ch 5 milestone uses random placeholder inputs instead of text | 5.8 | Ch 7.4 (one-hot), Ch 10 (embeddings) |
+| Softmax shares described as "how strongly favored", not probability | 5.7 | Ch 6.2 (loss), Ch 38.4 (calibration) |
 
 ### 8. Open questions and decisions
 

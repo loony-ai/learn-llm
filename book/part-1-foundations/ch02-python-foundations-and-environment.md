@@ -228,9 +228,9 @@ All checks passed.
 Then `pytest -q`, from `code/` (the book's build also passes `-p no:cacheprovider`, which only stops pytest from writing a `.pytest_cache` folder):
 
 ```text
-........................................................................ [ 77%]
-.....................                                                    [100%]
-93 passed in 1.40s
+........................................................................ [ 67%]
+..................................                                       [100%]
+106 passed in 1.49s
 ```
 
 The 51 tests include all of Chapter 1's tests, running unchanged under pytest, plus this chapter's.
@@ -1102,7 +1102,7 @@ E         Use -v to get more diff
 examples/ch02/test_failure_demo.py:17: AssertionError
 =========================== short test summary info ============================
 FAILED examples/ch02/test_failure_demo.py::test_targets_are_inputs_shifted_by_one
-============================== 1 failed in 0.01s ===============================
+============================== 1 failed in 0.02s ===============================
 ```
 
 The report shows the failing line (marked `>`), the two values compared, and the first position where they differ. `targets` equals `inputs`: the function forgot to shift. A loss that decreases nicely can hide this exact bug in a real training pipeline, so Chapter 11 tests for it explicitly.
@@ -1387,9 +1387,9 @@ python -m scripts.ch02_train_counting
 Observed output:
 
 ```text
-2026-10-02 21:23:02,557 INFO    ch02_train_counting: Config: CountingRunConfig(data='data/tiny/harbor.txt', checkpoint='runs/ch02/counting_model.json', seed=0, samples=3, prompt='the keeper', model=CountingModelConfig(context_size=2, lowercase=True))
-2026-10-02 21:23:02,558 INFO    ch02_train_counting: Trained on 40 lines: 359 observations, 226 parameters
-2026-10-02 21:23:02,559 INFO    ch02_train_counting: Saved checkpoint to runs/ch02/counting_model.json and config to runs/ch02/counting_model.config.json
+2026-10-02 21:29:58,216 INFO    ch02_train_counting: Config: CountingRunConfig(data='data/tiny/harbor.txt', checkpoint='runs/ch02/counting_model.json', seed=0, samples=3, prompt='the keeper', model=CountingModelConfig(context_size=2, lowercase=True))
+2026-10-02 21:29:58,217 INFO    ch02_train_counting: Trained on 40 lines: 359 observations, 226 parameters
+2026-10-02 21:29:58,218 INFO    ch02_train_counting: Saved checkpoint to runs/ch02/counting_model.json and config to runs/ch02/counting_model.config.json
 Sample 1: the keeper wrote the time in the lamp went dark during the storm broke the old pier.  [end_marker]
 Sample 2: the keeper wrote the weather in the wind turned the old pier creaked in the lamp went dark during the storm in  [max_new_words]
 Sample 3: the keeper lit the lamp.  [end_marker]
