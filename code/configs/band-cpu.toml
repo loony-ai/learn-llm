@@ -1,0 +1,12 @@
+# Chapter 6: train a small network to detect a band of input values.
+runs_root = "runs"
+run_name = "ch06-band"
+seed = 0
+train_examples = 2000
+validation_examples = 500
+hidden = 16
+activation = "relu"
+optimizer = "adamw"        # "adamw" or "sgd"
+learning_rate = 0.01
+epochs = 30
+batch_size = 32

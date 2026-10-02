@@ -1,6 +1,6 @@
 ## Chapter 5: Neural Networks Through Behavior and Code
 
-[Back to index](../../README.md) · Previous: [Chapter 4](ch04-data-experiments-reproducibility.md) · Next: Chapter 6 (planned)
+[Back to index](../../README.md) · Previous: [Chapter 4](ch04-data-experiments-reproducibility.md) · Next: [Chapter 6](ch06-how-training-works.md)
 
 The counting model fails completely on contexts it has never seen (Chapter 1.11), and Chapter 4 measured how quickly that failure grows as contexts get longer. A neural network takes a different approach. Instead of looking up stored counts, it *computes* a score for every candidate from numbers describing the input, using a large set of adjustable numbers. Because it computes rather than looks up, it produces scores for any input at all, including inputs it has never seen.
 
@@ -924,4 +924,4 @@ You can now:
 - Convert logits into shares with softmax, predict how changes to logits affect those shares, and choose tokens greedily or by sampling.
 - Trace shapes through a network and decode shape errors.
 
-**Next:** Chapter 6 explains how training adjusts parameters so that a network's scores match the data: loss, gradients, optimizers, and the training loop.
+**Next:** [Chapter 6](ch06-how-training-works.md) explains how training adjusts parameters so that a network's scores match the data: loss, gradients, optimizers, and the training loop.

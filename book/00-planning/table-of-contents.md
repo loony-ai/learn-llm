@@ -90,7 +90,7 @@ File: [ch05-neural-networks.md](../part-1-foundations/ch05-neural-networks.md) Â
 - 5.9 Common mistakes, recap, concept checks, exercises, answers, checkpoint
 
 #### Chapter 6: How Training Works: Loss, Gradients, and Optimizers
-Code: `code/llmfp/training_basics.py`
+File: [ch06-how-training-works.md](../part-1-foundations/ch06-how-training-works.md) Â· Code: `code/llmfp/training_basics.py`, `code/llmfp/toy_data.py`, `code/scripts/ch06_*.py`, `code/examples/ch06/`
 
 - 6.1 The problem: how does software adjust millions of numbers sensibly?
 - 6.2 Loss: one number that measures how wrong the predictions are (cross-entropy, by behavior)
@@ -102,6 +102,7 @@ Code: `code/llmfp/training_basics.py`
 - 6.8 Gradients add up: `zero_grad`, accidental accumulation, and intentional gradient accumulation
 - 6.9 Training mode, evaluation mode, and turning off gradient tracking
 - 6.10 Experiments: learning rates that are too small, too large, and workable
+- 6.11 Common mistakes, recap, concept checks, exercises, answers, checkpoint
 
 #### Chapter 7: Project 0: Your First Trained Model, a Next-Character Predictor
 Code: `code/llmfp/char_model.py`, `code/scripts/ch07_train_char_model.py`

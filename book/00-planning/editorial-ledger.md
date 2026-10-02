@@ -4,7 +4,7 @@
 
 The ledger is the book's source of truth for what has been delivered, what depends on what, and what must be revisited. Update it with every chapter.
 
-**Last updated:** 2026-10-02, after Chapter 5.
+**Last updated:** 2026-10-02, after Chapter 6.
 
 ### 1. Completed chapters and outstanding sections
 
@@ -16,7 +16,8 @@ The ledger is the book's source of truth for what has been delivered, what depen
 | 3 Tensors | Done | Sections 3.1–3.14 (3.14 added for recap/exercises), 6 exercises with answers |
 | 4 Data, experiments, reproducibility | Done | Sections 4.1–4.10 (4.9 retitled; 4.10 added), 6 exercises with answers |
 | 5 Neural networks through behavior and code | Done | Sections 5.1–5.9, 6 exercises with answers |
-| 6–45 | Not started | Next: Chapter 6 |
+| 6 How training works | Done | Sections 6.1–6.11, 6 exercises with answers |
+| 7–45 | Not started | Next: Chapter 7 |
 | Appendices A–G | Not started | The glossary will be seeded from the ledger's concept table |
 
 ### 2. Concepts introduced
@@ -114,7 +115,19 @@ Only concepts that have been *delivered* are listed. Planned locations are in th
 | Initialization; symmetry breaking | 5.6 | Seeds | Ch 16.4 |
 | Logits; softmax (by behavior); calibration (named) | 5.7 | Shift invariance, gap effect, axis | Ch 6.2, 21.4, 38.4 |
 | Forward hook; shape trace | 5.8 | `shape_trace` | Ch 16.7 |
-| `torch.no_grad()` (used, explanation deferred) | 5.8 | — | Ch 6.9 |
+| `torch.no_grad()` (used, explanation deferred) | 5.8 | Explained in 6.9 | — |
+| Loss; cross-entropy (by behavior, reference values for even spread) | 6.2 | Logits-not-shares bug shown | Ch 19.3 |
+| Mean squared error (by behavior) | 6.3 | One-knob task | — |
+| Gradient (direction + sensitivity; confirmed by nudging) | 6.3–6.4 | -83.3 measured = autograd | — |
+| Autograd: requires_grad, grad_fn, computation graph, backward, .grad, detach | 6.5 | Math of chain rule explicitly omitted | Ch 16.8 (gradient-flow tests) |
+| Optimizer; learning rate; SGD (stochastic gradient descent); AdamW (adaptive steps, momentum, weight decay) | 6.6 | Paths observed | Ch 19.5–19.6 |
+| Divergence; inf; NaN | 6.6, 6.10 | inf at step 105, NaN at 217 | Ch 20.5 |
+| Minibatch; epoch; stochasticity of SGD | 6.7 | — | Ch 11.8, 19.8 |
+| Training loop (5 lines) | 6.7 | `train_step` | Ch 19.2 |
+| Baseline comparison for training | 6.7 | 75.6% majority | Ch 25.4, 37.3 |
+| Gradient accumulation (intentional vs accidental); loss scaling by share | 6.8 | Verified equal to full batch | Ch 19.8 |
+| Train/eval mode; dropout (by behavior); no_grad; inference_mode | 6.9 | Independence table | Ch 15.6 |
+| Learning-rate sweeps on a log scale | 6.10 | SGD vs AdamW | Ch 19.6 |
 
 ### 3. Prerequisites and unresolved dependencies
 
@@ -159,6 +172,12 @@ Only concepts that have been *delivered* are listed. Planned locations are in th
 | `code/examples/ch05/*.py` | Ch 5 | Executed | 6 teaching programs |
 | `code/solutions/ch05_two_bands.py` | Ch 5 | Tested, executed | `build_two_band_network(centers, width)` |
 | `code/tests/test_nn_basics.py`, `test_ch05_solutions.py` | Ch 5 | 13 tests pass | — |
+| `code/llmfp/training_basics.py` | Ch 6 | Tested | `LossFunction`, `iterate_minibatches`, `train_step`, `evaluate`, `fit` |
+| `code/llmfp/toy_data.py` | Ch 6 | Tested | `make_band_data(count, low=1.5, high=2.5, seed=0, span=4.0)` |
+| `code/scripts/ch06_train_band.py`, `ch06_learning_rates.py` | Ch 6 | Executed | `BandConfig`; `configs/band-cpu.toml` |
+| `code/examples/ch06/*.py` | Ch 6 | Executed | 6 teaching programs |
+| `code/solutions/ch06_forgot_zero_grad.py`, `ch06_accumulated_step.py` | Ch 6 | Executed; accumulation tested | `accumulated_train_step(...)` |
+| `code/tests/test_training_basics.py` | Ch 6 | 10 tests pass | — |
 | `code/llmfp/counting_lm.py` | Ch 1 | Tested | `START`, `END`, `CountingModelConfig`, `GenerationResult`, `split_into_words`, `join_words`, `rank_followers`, `CountingLanguageModel` (`train`, `context_for`, `followers_for`, `next_word_candidates`, `generate`, `num_parameters`, `num_contexts`, `vocabulary`, `save`, `load`), `read_lines` |
 | `code/scripts/__init__.py` | Ch 1 | — | Makes `scripts` importable as a package |
 | `code/scripts/ch01_counting_demo.py` | Ch 1 | Executed | CLI: `--data --context-size --prompt --samples --max-new-words --seed --checkpoint` |
@@ -220,6 +239,9 @@ Note: Chapter 1 code was written to need only Python 3.10+ features, but it was 
 | Ch 5 full test suite | `pytest` | 106 passed | 2026-10-02 |
 | Ch 5 answer numbers (counts, softmax values) | Checked in a one-off command | Match the text | 2026-10-02 |
 | Audit of Ch 1–5 | `python3 tools/audit_chapters.py` | ok | 2026-10-02 |
+| Ch 6 full test suite | `pytest` | 116 passed | 2026-10-02 |
+| Ch 6 single-thread timing (band run 6.3 s vs 3.5 s) | One-off measurement, not in repo | Quoted as observed on test machine | 2026-10-02 |
+| Audit of Ch 1–6 | `python3 tools/audit_chapters.py` | ok | 2026-10-02 |
 
 ### 7. Teaching simplifications to revisit
 
@@ -245,6 +267,10 @@ Note: Chapter 1 code was written to need only Python 3.10+ features, but it was 
 | Variation judged by spread across salts, no statistics | 4.9 | Ch 37.7 |
 | Ch 5 milestone uses random placeholder inputs instead of text | 5.8 | Ch 7.4 (one-hot), Ch 10 (embeddings) |
 | Softmax shares described as "how strongly favored", not probability | 5.7 | Ch 6.2 (loss), Ch 38.4 (calibration) |
+| Why gradients point the right way (calculus) omitted by design | 6.5 | Stated as a limitation; not revisited |
+| Weight decay mentioned only | 6.6 | Ch 19.5 |
+| Fixed learning rate (no schedule) | 6.7 | Ch 19.6 |
+| Training loop without clipping, checkpoints, mixed precision | 6.7 | Ch 19 |
 
 ### 8. Open questions and decisions
 
