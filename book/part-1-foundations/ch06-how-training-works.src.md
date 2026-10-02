@@ -1,6 +1,6 @@
 ## Chapter 6: How Training Works: Loss, Gradients, and Optimizers
 
-[Back to index](../../README.md) · Previous: [Chapter 5](ch05-neural-networks.md) · Next: Chapter 7 (planned)
+[Back to index](../../README.md) · Previous: [Chapter 5](ch05-neural-networks.md) · Next: [Chapter 7](ch07-project-0-char-model.md)
 
 In Chapter 5 you set a network's parameters by hand to detect a band of input values. It took careful thought for three hidden units. A language model has millions to billions of parameters, and nobody can set them by hand. **Training** is the automated process that sets them from examples. It is often presented with calculus. This chapter presents it as what the software actually does, step by step, with every step observed in code:
 
@@ -481,4 +481,4 @@ You can now:
 - Use `train()`/`eval()` and `no_grad()` correctly and know which problem each solves.
 - Diagnose learning rates that are too small or too large, and run a sweep to find a workable one.
 
-**Next:** Chapter 7 puts it all together: a network trained on harbor text to predict the next character, compared head to head with the counting model.
+**Next:** [Chapter 7](ch07-project-0-char-model.md) puts it all together: a network trained on harbor text to predict the next character, compared head to head with the counting model.

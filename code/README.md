@@ -1,6 +1,6 @@
 # Companion code
 
-Code for *Large Language Models From First Principles*. Run every command from this `code/` directory.
+Code for *Large Language Models From First Principles*. Run every command from this `code/` directory, with the `.venv` environment active (Chapter 2).
 
 ## Setup (Chapter 2)
 
@@ -17,13 +17,18 @@ pytest                                        # run all tests
 
 Linux CPU alternative: `python -m pip install -r requirements/linux-cpu-lock.txt && python -m pip install --no-deps -e .`
 
-## Running chapter code
+## Part 1 entry points
 
-```bash
-python -m scripts.ch01_counting_demo                          # Chapter 1
-python -m scripts.ch02_train_counting --set model.context_size=3   # Chapter 2
-python examples/ch02/generators_tour.py                       # Chapter 2 examples
-python -m solutions.ch01_backoff                              # exercise solutions
-```
+| Chapter | Command |
+|---|---|
+| 1 | `python -m scripts.ch01_counting_demo` |
+| 2 | `python -m scripts.ch02_train_counting --set model.context_size=3` |
+| 3 | `python -m scripts.ch03_tensor_tour --device auto` |
+| 4 | `python -m scripts.ch04_make_harbor_corpus` and `python -m scripts.ch04_evaluate_counting` |
+| 5 | `python -m scripts.ch05_untrained_network` |
+| 6 | `python -m scripts.ch06_train_band` and `python -m scripts.ch06_learning_rates` |
+| 7 | `python -m scripts.ch07_train_char_model` (add `--set overfit_one_batch=true` for the debugging mode) |
 
-Generated files go in `runs/`, which can be deleted at any time.
+Teaching examples live in `examples/chNN/` (run with `python examples/chNN/<name>.py`); exercise solutions in `solutions/` (run with `python -m solutions.<name>`).
+
+Generated files go in `runs/`, one directory per run, which can be deleted at any time.

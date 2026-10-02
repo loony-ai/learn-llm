@@ -105,7 +105,7 @@ File: [ch06-how-training-works.md](../part-1-foundations/ch06-how-training-works
 - 6.11 Common mistakes, recap, concept checks, exercises, answers, checkpoint
 
 #### Chapter 7: Project 0: Your First Trained Model, a Next-Character Predictor
-Code: `code/llmfp/char_model.py`, `code/scripts/ch07_train_char_model.py`
+File: [ch07-project-0-char-model.md](../part-1-foundations/ch07-project-0-char-model.md) · Code: `code/llmfp/char_model.py`, `code/scripts/ch07_train_char_model.py`, `code/configs/char-model-cpu.toml`
 
 - 7.1 The problem: replace the count table with something learned
 - 7.2 A character vocabulary for the harbor text
@@ -116,6 +116,8 @@ Code: `code/llmfp/char_model.py`, `code/scripts/ch07_train_char_model.py`
 - 7.7 Sampling text from the trained network
 - 7.8 Saving and loading with `state_dict`
 - 7.9 First debugging technique: overfit a single batch
+- 7.10 Project 0 review: evaluation, failure cases, debugging exercise, reviewer checklist, extensions
+- 7.11 Recap, concept checks, exercises, answers, checkpoint
 
 ---
 

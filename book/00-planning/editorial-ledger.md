@@ -4,7 +4,7 @@
 
 The ledger is the book's source of truth for what has been delivered, what depends on what, and what must be revisited. Update it with every chapter.
 
-**Last updated:** 2026-10-02, after Chapter 6.
+**Last updated:** 2026-10-02, after Chapter 7 (Part 1 complete).
 
 ### 1. Completed chapters and outstanding sections
 
@@ -17,7 +17,9 @@ The ledger is the book's source of truth for what has been delivered, what depen
 | 4 Data, experiments, reproducibility | Done | Sections 4.1–4.10 (4.9 retitled; 4.10 added), 6 exercises with answers |
 | 5 Neural networks through behavior and code | Done | Sections 5.1–5.9, 6 exercises with answers |
 | 6 How training works | Done | Sections 6.1–6.11, 6 exercises with answers |
-| 7–45 | Not started | Next: Chapter 7 |
+| 7 Project 0: next-character predictor | Done | Sections 7.1–7.11 incl. project review (criteria, failure cases, debugging exercise, reviewer checklist, extensions), 6 exercises with answers |
+| **Part 1** | **Complete** | Chapters 1–7 |
+| 8–45 | Not started | Next: Chapter 8 (Part 2) |
 | Appendices A–G | Not started | The glossary will be seeded from the ledger's concept table |
 
 ### 2. Concepts introduced
@@ -128,6 +130,16 @@ Only concepts that have been *delivered* are listed. Planned locations are in th
 | Gradient accumulation (intentional vs accidental); loss scaling by share | 6.8 | Verified equal to full batch | Ch 19.8 |
 | Train/eval mode; dropout (by behavior); no_grad; inference_mode | 6.9 | Independence table | Ch 15.6 |
 | Learning-rate sweeps on a log scale | 6.10 | SGD vs AdamW | Ch 19.6 |
+| Character vocabulary (train-only, sorted, saved) | 7.2 | — | Ch 8.6–8.7 |
+| Context window of a model; `unfold` windows | 7.3 | Hand-checked test | Ch 11.2–11.4 |
+| One-hot vector; its costs (size, no sharing, position-specific) | 7.4 | Used in CharMLP | Ch 10.2 |
+| Neural vs counting on seen/unseen contexts | 7.6 | 97.2% vs 0% unseen; sweep 2–24 | Ch 10 |
+| Fact-checking generated text against a known world | 7.7 | 72 true / 22 false / 106 malformed of 200 | Ch 21.9, 38.3 |
+| Limited window loses structure | 7.7 | "Before the storm." | Ch 13 |
+| `state_dict`, `load_state_dict`, `weights_only=True`, `map_location` | 7.8 | Checkpoint dir of 3 files | Ch 19.9, 22.3 |
+| Overfit a single batch | 7.9 | loss 0.0004 | Ch 20.3 |
+| Off-by-one target bug (100% accuracy, degenerate output) | 7.9 | Test pins pairing | Ch 11.3, 20 |
+| Project review format (criteria, failures, debugging exercise, checklist, extensions) | 7.10 | Template for P1–P7 | Ch 9, 16, 21, 28, 33, 35, 41 |
 
 ### 3. Prerequisites and unresolved dependencies
 
@@ -178,6 +190,10 @@ Only concepts that have been *delivered* are listed. Planned locations are in th
 | `code/examples/ch06/*.py` | Ch 6 | Executed | 6 teaching programs |
 | `code/solutions/ch06_forgot_zero_grad.py`, `ch06_accumulated_step.py` | Ch 6 | Executed; accumulation tested | `accumulated_train_step(...)` |
 | `code/tests/test_training_basics.py` | Ch 6 | 10 tests pass | — |
+| `code/llmfp/char_model.py` | Ch 7 | Tested | `CharVocabulary`, `make_examples`, `CharModelConfig`, `CharMLP`, `counting_baseline`, `sample_text`, `save_checkpoint`, `load_checkpoint` |
+| `code/scripts/ch07_train_char_model.py` | Ch 7 | Executed (train + overfit modes) | `CharRunConfig`; `configs/char-model-cpu.toml`; `--device` |
+| `code/solutions/ch07_context_sweep.py`, `ch07_off_by_one.py`, `ch07_fact_check.py` | Ch 7 | Executed; helpers tested | `make_examples_with_bug`, `classify` |
+| `code/tests/test_char_model.py` | Ch 7 | 15 tests pass | — |
 | `code/llmfp/counting_lm.py` | Ch 1 | Tested | `START`, `END`, `CountingModelConfig`, `GenerationResult`, `split_into_words`, `join_words`, `rank_followers`, `CountingLanguageModel` (`train`, `context_for`, `followers_for`, `next_word_candidates`, `generate`, `num_parameters`, `num_contexts`, `vocabulary`, `save`, `load`), `read_lines` |
 | `code/scripts/__init__.py` | Ch 1 | — | Makes `scripts` importable as a package |
 | `code/scripts/ch01_counting_demo.py` | Ch 1 | Executed | CLI: `--data --context-size --prompt --samples --max-new-words --seed --checkpoint` |
@@ -242,6 +258,11 @@ Note: Chapter 1 code was written to need only Python 3.10+ features, but it was 
 | Ch 6 full test suite | `pytest` | 116 passed | 2026-10-02 |
 | Ch 6 single-thread timing (band run 6.3 s vs 3.5 s) | One-off measurement, not in repo | Quoted as observed on test machine | 2026-10-02 |
 | Audit of Ch 1–6 | `python3 tools/audit_chapters.py` | ok | 2026-10-02 |
+| Ch 7 full test suite | `pytest` | 131 passed | 2026-10-02 |
+| Ch 7 training run, overfit mode, sweep, off-by-one, fact check | Via `@@RUN@@` | Output inserted as observed; prose numbers checked against it | 2026-10-02 |
+| Ch 7 Exercise 2/3 claims | One-off check against a saved checkpoint | Answers updated to observed values | 2026-10-02 |
+| Audit of Ch 1–7 | `python3 tools/audit_chapters.py` | ok | 2026-10-02 |
+| `--device cuda` for Ch 3–7 scripts | — | **Not executed** (no GPU on test machine) | — |
 
 ### 7. Teaching simplifications to revisit
 
@@ -271,6 +292,11 @@ Note: Chapter 1 code was written to need only Python 3.10+ features, but it was 
 | Weight decay mentioned only | 6.6 | Ch 19.5 |
 | Fixed learning rate (no schedule) | 6.7 | Ch 19.6 |
 | Training loop without clipping, checkpoints, mixed precision | 6.7 | Ch 19 |
+| One-hot inputs | 7.4 | Ch 10 (embeddings) |
+| Character tokens | 7.1 | Ch 8–9 (bytes, BPE) |
+| Fixed window, no attention | 7.3 | Part 3 |
+| Short-prompt padding with newlines as a start marker | 7.7 | Ch 9.6 (special tokens) |
+| Model checkpoint without optimizer/RNG state | 7.8 | Ch 19.9 |
 
 ### 8. Open questions and decisions
 

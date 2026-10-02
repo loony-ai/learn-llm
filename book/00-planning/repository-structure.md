@@ -52,7 +52,7 @@ code/
 │   ├── nn_basics.py               # Ch 5  TinyMLP, ACTIVATIONS, count_parameters, parameter_table, shape_trace
 │   ├── training_basics.py         # Ch 6  iterate_minibatches, train_step, evaluate, fit
 │   ├── toy_data.py                # Ch 6  make_band_data
-│   ├── char_model.py              # Ch 7  next-character network
+│   ├── char_model.py              # Ch 7  CharVocabulary, make_examples, CharMLP, counting_baseline, sample_text, checkpoints
 │   ├── tokenizers/                # Ch 8-9
 │   │   ├── base.py                #   Tokenizer protocol: encode, decode, vocab_size, save, load
 │   │   ├── char.py, byte.py       #   Ch 8
@@ -97,7 +97,8 @@ code/
 │   ├── ch04_evaluate_counting.py  # Ch 4  splits, leakage, overfitting, run records
 │   ├── ch05_untrained_network.py  # Ch 5  parameter table, shape trace, untrained scores
 │   ├── ch06_train_band.py         # Ch 6  config-driven training with baselines and run records
-│   └── ch06_learning_rates.py     # Ch 6  learning-rate sweep
+│   ├── ch06_learning_rates.py     # Ch 6  learning-rate sweep
+│   └── ch07_train_char_model.py   # Ch 7  Project 0: train, compare, checkpoint, sample, overfit-one-batch mode
 ├── tests/                         # pytest-compatible tests, mirroring llmfp/
 │   ├── test_counting_lm.py        # Ch 1
 │   ├── test_ch01_solutions.py     # Ch 1 exercise solutions
@@ -109,7 +110,8 @@ code/
 │   ├── test_experiment.py         # Ch 4 (experiment + counting_eval)
 │   ├── test_nn_basics.py          # Ch 5
 │   ├── test_ch05_solutions.py     # Ch 5 exercise solutions
-│   └── test_training_basics.py    # Ch 6 (+ Ch 6 accumulation solution)
+│   ├── test_training_basics.py    # Ch 6 (+ Ch 6 accumulation solution)
+│   └── test_char_model.py         # Ch 7 (+ Ch 7 solutions)
 ├── solutions/                     # Suggested exercise solutions: chNN_<exercise>.py
 │   ├── ch01_backoff.py            # Ch 1, Exercise 5
 │   ├── ch01_memorization.py       # Ch 1, Exercise 6
@@ -119,7 +121,10 @@ code/
 │   ├── ch04_compare_runs.py       # Ch 4, Exercise 4
 │   ├── ch05_two_bands.py          # Ch 5, Exercise 6
 │   ├── ch06_forgot_zero_grad.py   # Ch 6, Exercise 3
-│   └── ch06_accumulated_step.py   # Ch 6, Exercise 4
+│   ├── ch06_accumulated_step.py   # Ch 6, Exercise 4
+│   ├── ch07_context_sweep.py      # Ch 7, Exercise 1
+│   ├── ch07_off_by_one.py         # Ch 7, Exercise 4
+│   └── ch07_fact_check.py         # Ch 7, Exercise 5
 ├── examples/                      # Small standalone teaching programs: examples/chNN/*.py
 │   ├── ch02/                      # Ch 2  collections, functions, classes, generators, files, pytest failure demo
 │   ├── ch03/                      # Ch 3  arrays, shapes, dtypes, indexing, reshaping, broadcasting, reductions, batching
@@ -129,7 +134,8 @@ code/
 ├── configs/                       # TOML experiment configs (<purpose>-cpu.toml, <purpose>-gpu.toml)
 │   ├── counting-cpu.toml          # Ch 2
 │   ├── counting-eval-cpu.toml     # Ch 4
-│   └── band-cpu.toml              # Ch 6
+│   ├── band-cpu.toml              # Ch 6
+│   └── char-model-cpu.toml        # Ch 7
 ├── data/
 │   ├── tiny/harbor.txt            # Ch 1: 40 original sentences (written for this book)
 │   ├── tiny/harbor_synth.txt      # Ch 4: 3000 generated sentences, 1024 distinct (seed 0)
@@ -155,6 +161,7 @@ These signatures are promises. A later chapter may *add* parameters with default
 | Splitting | Ch 4 | `hash_split(items, fractions=(0.8,0.1,0.1), key=str, salt="") -> Splits`; `shuffle_split(items, fractions, seed)`; `deduplicate`; `count_overlap` |
 | Network inspection | Ch 5 | `TinyMLP(in, hidden, out, activation="relu")`; `count_parameters(module, trainable_only=False)`; `format_parameter_table(module)`; `shape_trace(module, *inputs) -> [(name, shape)]` |
 | Basic training | Ch 6 | `train_step(model, inputs, targets, loss_fn, optimizer) -> float`; `evaluate(model, inputs, targets, loss_fn, batch_size=1024) -> {loss, accuracy}`; `fit(model, train_data, validation_data, loss_fn, optimizer, epochs, batch_size, seed=0) -> history` |
+| Character model | Ch 7 | `CharVocabulary.build(text)`, `.encode`, `.decode`; `make_examples(ids, context_size) -> (contexts, targets)`; `CharMLP(CharModelConfig(vocab_size, context_size=8, hidden=128))`; `sample_text(model, vocab, prompt, length, generator=None, greedy=False)`; `save_checkpoint(dir, model, vocab, extra)` / `load_checkpoint(dir, device)` |
 | `Tokenizer` protocol | Ch 8 | `.encode(text) -> list[int]`, `.decode(ids) -> str`, `.vocab_size`, `.save(path)`, `.load(path)` |
 | `GPTConfig` | Ch 12 | dataclass: `vocab_size, context_length, d_model, n_heads, n_layers, dropout, ...` |
 | `GPT.forward` | Ch 16 | `(token_ids[B, T], attention_mask=None, kv_cache=None) -> logits[B, T, vocab_size]` |

@@ -17,7 +17,7 @@ flowchart LR
 
 | # | Project | Chapter | Requires chapters | Hardware | Key success criteria (summary) | Code |
 |---|---|---|---|---|---|---|
-| P0 | Next-character predictor (warm-up) | 7 | 1–6 | CPU, minutes | Validation loss beats the "always guess the most common character" baseline; single batch can be overfit; checkpoint round-trips | `code/llmfp/char_model.py` |
+| P0 | Next-character predictor (warm-up) **(done)** | 7 | 1–6 | CPU, seconds | Validation loss beats the "always guess the most common character" baseline; single batch can be overfit; checkpoint round-trips | `code/llmfp/char_model.py` |
 | P1 | Build and test a tokenizer | 9 | 2, 8 | CPU | Byte-level BPE; exact round trip on arbitrary Unicode, including emoji and code; save/load; tests; compression compared with a published tokenizer | `code/projects/p1_tokenizer/` |
 | P2 | Small decoder-only transformer from scratch | 16–17 | 10–15 | CPU | Shape, causality, mask, and gradient-flow tests pass; parameter count matches hand count; KV-cached generation matches uncached output | `code/projects/p2_transformer/` |
 | P3 | Train, resume, analyze limitations | 21 | 18–20 | CPU (hours) or GPU (minutes) | Reproducible data pipeline; validation loss below agreed target; interrupted run resumes to the same result; written limitations analysis with examples | `code/projects/p3_train_and_analyze/` |

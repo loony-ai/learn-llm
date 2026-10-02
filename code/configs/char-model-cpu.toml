@@ -1,0 +1,15 @@
+# Chapter 7 (Project 0): a neural next-character model for harbor text.
+runs_root = "runs"
+run_name = "ch07-char-model"
+data = "data/tiny/harbor_synth.txt"
+seed = 0
+context_size = 12          # characters of context
+hidden = 128
+learning_rate = 0.003
+epochs = 8
+batch_size = 128
+prompt = "The keeper "
+sample_length = 60
+samples = 3
+overfit_one_batch = false  # debugging mode (section 7.9)
+overfit_steps = 300
