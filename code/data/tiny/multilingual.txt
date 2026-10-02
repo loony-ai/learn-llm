@@ -1,0 +1,11 @@
+The keeper lit the lamp.
+Le gardien a allumé la lampe.
+Der Wärter zündete die Lampe an.
+El farero encendió la lámpara.
+Смотритель зажёг лампу.
+रखवाले ने दीया जलाया।
+灯台守がランプをつけた。
+灯塔看守人点亮了灯。
+أشعل الحارس المصباح.
+🌊⚓🐟🚢
+for boat in harbor: print(boat.name)

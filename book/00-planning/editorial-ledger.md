@@ -4,7 +4,7 @@
 
 The ledger is the book's source of truth for what has been delivered, what depends on what, and what must be revisited. Update it with every chapter.
 
-**Last updated:** 2026-10-02, after Chapter 7 (Part 1 complete).
+**Last updated:** 2026-10-02, after Chapter 8.
 
 ### 1. Completed chapters and outstanding sections
 
@@ -19,7 +19,8 @@ The ledger is the book's source of truth for what has been delivered, what depen
 | 6 How training works | Done | Sections 6.1–6.11, 6 exercises with answers |
 | 7 Project 0: next-character predictor | Done | Sections 7.1–7.11 incl. project review (criteria, failure cases, debugging exercise, reviewer checklist, extensions), 6 exercises with answers |
 | **Part 1** | **Complete** | Chapters 1–7 |
-| 8–45 | Not started | Next: Chapter 8 (Part 2) |
+| 8 Text, Unicode, bytes, tokens | Done | Sections 8.1–8.9, 6 exercises with answers |
+| 9–45 | Not started | Next: Chapter 9 |
 | Appendices A–G | Not started | The glossary will be seeded from the ledger's concept table |
 
 ### 2. Concepts introduced
@@ -140,6 +141,14 @@ Only concepts that have been *delivered* are listed. Planned locations are in th
 | Overfit a single batch | 7.9 | loss 0.0004 | Ch 20.3 |
 | Off-by-one target bug (100% accuracy, degenerate output) | 7.9 | Test pins pairing | Ch 11.3, 20 |
 | Project review format (criteria, failures, debugging exercise, checklist, extensions) | 7.10 | Template for P1–P7 | Ch 9, 16, 21, 28, 33, 35, 41 |
+| Unicode; code point; combining character; grapheme; ZWJ | 8.2 | Observed len() behavior | — |
+| UTF-8 (1–4 bytes; self-describing; invalid sequences); replacement character | 8.3 | Byte tables | Ch 39.6 (streaming) |
+| Normalization NFC/NFD/NFKC; look-alike and zero-width characters; casefold | 8.4 | Recorded choice: book tokenizers do not normalize | Ch 18.4, 36 |
+| Word/char/byte trade-offs; per-language token cost | 8.5 | Measured | Ch 9.9 |
+| Token, vocabulary, token ID, tokenizer (formal) | 8.6 | Tokenizer-model matching | Ch 23 |
+| Unknown token `<unk>` | 8.7 | CharTokenizer ID 0 | Ch 9.6 |
+| Abstract base class; registry decorator | 8.7 | `Tokenizer`, `@register` | — |
+| Round-trip property; property-based testing (named) | 8.8 | 200 random strings | Ch 9.10 |
 
 ### 3. Prerequisites and unresolved dependencies
 
@@ -194,6 +203,11 @@ Only concepts that have been *delivered* are listed. Planned locations are in th
 | `code/scripts/ch07_train_char_model.py` | Ch 7 | Executed (train + overfit modes) | `CharRunConfig`; `configs/char-model-cpu.toml`; `--device` |
 | `code/solutions/ch07_context_sweep.py`, `ch07_off_by_one.py`, `ch07_fact_check.py` | Ch 7 | Executed; helpers tested | `make_examples_with_bug`, `classify` |
 | `code/tests/test_char_model.py` | Ch 7 | 15 tests pass | — |
+| `code/llmfp/tokenizers/` (`__init__`, `base`, `char`, `byte`) | Ch 8 | Tested | See interface table in repository-structure.md |
+| `code/scripts/ch08_compare_units.py` | Ch 8 | Executed | — |
+| `code/examples/ch08/*.py` | Ch 8 | Executed | 3 teaching programs |
+| `code/data/tiny/multilingual.txt` | Ch 8 | — | Written for the book; illustrative translations |
+| `code/tests/test_tokenizers.py` | Ch 8 | 18 tests pass | — |
 | `code/llmfp/counting_lm.py` | Ch 1 | Tested | `START`, `END`, `CountingModelConfig`, `GenerationResult`, `split_into_words`, `join_words`, `rank_followers`, `CountingLanguageModel` (`train`, `context_for`, `followers_for`, `next_word_candidates`, `generate`, `num_parameters`, `num_contexts`, `vocabulary`, `save`, `load`), `read_lines` |
 | `code/scripts/__init__.py` | Ch 1 | — | Makes `scripts` importable as a package |
 | `code/scripts/ch01_counting_demo.py` | Ch 1 | Executed | CLI: `--data --context-size --prompt --samples --max-new-words --seed --checkpoint` |
@@ -263,6 +277,9 @@ Note: Chapter 1 code was written to need only Python 3.10+ features, but it was 
 | Ch 7 Exercise 2/3 claims | One-off check against a saved checkpoint | Answers updated to observed values | 2026-10-02 |
 | Audit of Ch 1–7 | `python3 tools/audit_chapters.py` | ok | 2026-10-02 |
 | `--device cuda` for Ch 3–7 scripts | — | **Not executed** (no GPU on test machine) | — |
+| Ch 8 full test suite | `pytest` | 149 passed | 2026-10-02 |
+| Ch 8 Exercise 5 claims | One-off measurement | Answer updated to observed per-line unknowns | 2026-10-02 |
+| Audit of Ch 1–8 | `python3 tools/audit_chapters.py` | ok | 2026-10-02 |
 
 ### 7. Teaching simplifications to revisit
 

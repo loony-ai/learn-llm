@@ -124,7 +124,7 @@ File: [ch07-project-0-char-model.md](../part-1-foundations/ch07-project-0-char-m
 ### Part 2: Turning Text into Model Inputs
 
 #### Chapter 8: Text, Unicode, Bytes, and the Need for Tokens
-Code: `code/llmfp/tokenizers/base.py`, `char.py`, `byte.py`
+File: [ch08-text-unicode-bytes-tokens.md](../part-2-text-to-inputs/ch08-text-unicode-bytes-tokens.md) · Code: `code/llmfp/tokenizers/base.py`, `char.py`, `byte.py`, `code/scripts/ch08_compare_units.py`
 
 - 8.1 The problem: models consume integers, and text is not integers
 - 8.2 Characters, code points, and Unicode
@@ -134,6 +134,7 @@ Code: `code/llmfp/tokenizers/base.py`, `char.py`, `byte.py`
 - 8.6 Tokens, vocabularies, and token IDs
 - 8.7 A common `Tokenizer` interface; character and byte tokenizers
 - 8.8 Round-trip tests: decode(encode(text)) must give back the text
+- 8.9 Common mistakes, recap, concept checks, exercises, answers, checkpoint
 
 #### Chapter 9: Byte-Pair Encoding: Building a Subword Tokenizer (Capstone Project 1)
 Code: `code/llmfp/tokenizers/bpe.py`, `code/projects/p1_tokenizer/`

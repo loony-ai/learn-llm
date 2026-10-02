@@ -1,6 +1,6 @@
 ## Chapter 7: Project 0: Your First Trained Model, a Next-Character Predictor
 
-[Back to index](../../README.md) · Previous: [Chapter 6](ch06-how-training-works.md) · Next: Chapter 8 (planned)
+[Back to index](../../README.md) · Previous: [Chapter 6](ch06-how-training-works.md) · Next: [Chapter 8](../part-2-text-to-inputs/ch08-text-unicode-bytes-tokens.md)
 
 Everything in Part 1 comes together here. You will train a neural network on harbor text to predict the next character, using the honest data splits from Chapter 4, the network pieces from Chapter 5, and the training loop from Chapter 6. Then you will put it head to head with a counting model like Chapter 1's, on exactly the same data, and measure where each one succeeds and fails.
 
@@ -498,7 +498,7 @@ python -m scripts.ch07_train_char_model
 Observed output (under 10 seconds on the test machine):
 
 ```text
-Run: runs/ch07-char-model/20261002-214831   device: cpu (14 threads used by PyTorch)
+Run: runs/ch07-char-model/20261002-233443   device: cpu (14 threads used by PyTorch)
 Vocabulary: 29 characters '\n .ABITabcdefghiklmnoprstuwxy'
 Examples: 44,367 training, 6,031 validation (context 12 characters)
 Parameters: 48,413
@@ -522,7 +522,7 @@ Validation accuracy by whether the counting model had seen the context:
   seen contexts    ( 5922 examples): network 91.5%, counting 91.7%
   unseen contexts  (  109 examples): network 97.2%, counting 0.0%
 
-Saved to runs/ch07-char-model/20261002-214831/checkpoint; reloaded model gives identical outputs: True
+Saved to runs/ch07-char-model/20261002-233443/checkpoint; reloaded model gives identical outputs: True
 Greedy : 'The keeper wrote in the log at dusk.\nThe fishers unloaded the boats and'
 Sample 1: 'The keeper rang the bell and watched the boats and cleaned the glass be'
 Sample 2: 'The keeper rangaten bellawroce d the sky and unloaded the boats.\nThe ch'
@@ -799,4 +799,4 @@ You have finished Part 1. You can now:
 - Analyze generated text for memorization, fluent falsehoods, and structural failures, rather than judging by impression.
 - Debug a training pipeline by overfitting a single batch, comparing with baselines, and inspecting outputs, and recognize results that are too good to be true.
 
-**Next:** Part 2 makes the inputs serious. Chapter 8 explains text encoding, Unicode, and bytes, and why tokens are not words.
+**Next:** Part 2 makes the inputs serious. [Chapter 8](../part-2-text-to-inputs/ch08-text-unicode-bytes-tokens.md) explains text encoding, Unicode, and bytes, and why tokens are not words.

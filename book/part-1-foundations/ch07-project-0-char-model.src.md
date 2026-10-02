@@ -1,6 +1,6 @@
 ## Chapter 7: Project 0: Your First Trained Model, a Next-Character Predictor
 
-[Back to index](../../README.md) · Previous: [Chapter 6](ch06-how-training-works.md) · Next: Chapter 8 (planned)
+[Back to index](../../README.md) · Previous: [Chapter 6](ch06-how-training-works.md) · Next: [Chapter 8](../part-2-text-to-inputs/ch08-text-unicode-bytes-tokens.md)
 
 Everything in Part 1 comes together here. You will train a neural network on harbor text to predict the next character, using the honest data splits from Chapter 4, the network pieces from Chapter 5, and the training loop from Chapter 6. Then you will put it head to head with a counting model like Chapter 1's, on exactly the same data, and measure where each one succeeds and fails.
 
@@ -402,4 +402,4 @@ You have finished Part 1. You can now:
 - Analyze generated text for memorization, fluent falsehoods, and structural failures, rather than judging by impression.
 - Debug a training pipeline by overfitting a single batch, comparing with baselines, and inspecting outputs, and recognize results that are too good to be true.
 
-**Next:** Part 2 makes the inputs serious. Chapter 8 explains text encoding, Unicode, and bytes, and why tokens are not words.
+**Next:** Part 2 makes the inputs serious. [Chapter 8](../part-2-text-to-inputs/ch08-text-unicode-bytes-tokens.md) explains text encoding, Unicode, and bytes, and why tokens are not words.

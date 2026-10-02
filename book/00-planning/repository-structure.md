@@ -55,7 +55,8 @@ code/
 │   ├── char_model.py              # Ch 7  CharVocabulary, make_examples, CharMLP, counting_baseline, sample_text, checkpoints
 │   ├── tokenizers/                # Ch 8-9
 │   │   ├── base.py                #   Tokenizer protocol: encode, decode, vocab_size, save, load
-│   │   ├── char.py, byte.py       #   Ch 8
+│   │   ├── __init__.py            #   Ch 8  exports; save_tokenizer/load_tokenizer
+│   │   ├── char.py, byte.py       #   Ch 8  CharTokenizer (with <unk> = 0), ByteTokenizer (256 IDs)
 │   │   └── bpe.py                 #   Ch 9
 │   ├── data/                      # Ch 11, 18
 │   │   ├── windows.py             #   sliding-window next-token dataset
@@ -98,7 +99,8 @@ code/
 │   ├── ch05_untrained_network.py  # Ch 5  parameter table, shape trace, untrained scores
 │   ├── ch06_train_band.py         # Ch 6  config-driven training with baselines and run records
 │   ├── ch06_learning_rates.py     # Ch 6  learning-rate sweep
-│   └── ch07_train_char_model.py   # Ch 7  Project 0: train, compare, checkpoint, sample, overfit-one-batch mode
+│   ├── ch07_train_char_model.py   # Ch 7  Project 0: train, compare, checkpoint, sample, overfit-one-batch mode
+│   └── ch08_compare_units.py      # Ch 8  words vs characters vs bytes
 ├── tests/                         # pytest-compatible tests, mirroring llmfp/
 │   ├── test_counting_lm.py        # Ch 1
 │   ├── test_ch01_solutions.py     # Ch 1 exercise solutions
@@ -111,7 +113,8 @@ code/
 │   ├── test_nn_basics.py          # Ch 5
 │   ├── test_ch05_solutions.py     # Ch 5 exercise solutions
 │   ├── test_training_basics.py    # Ch 6 (+ Ch 6 accumulation solution)
-│   └── test_char_model.py         # Ch 7 (+ Ch 7 solutions)
+│   ├── test_char_model.py         # Ch 7 (+ Ch 7 solutions)
+│   └── test_tokenizers.py         # Ch 8
 ├── solutions/                     # Suggested exercise solutions: chNN_<exercise>.py
 │   ├── ch01_backoff.py            # Ch 1, Exercise 5
 │   ├── ch01_memorization.py       # Ch 1, Exercise 6
@@ -130,7 +133,8 @@ code/
 │   ├── ch03/                      # Ch 3  arrays, shapes, dtypes, indexing, reshaping, broadcasting, reductions, batching
 │   ├── ch04/                      # Ch 4  seeds, set-order nondeterminism
 │   ├── ch05/                      # Ch 5  unit, linear layer, activations, modules, softmax
-│   └── ch06/                      # Ch 6  cross-entropy, nudging, autograd, optimizers, accumulation, modes
+│   ├── ch06/                      # Ch 6  cross-entropy, nudging, autograd, optimizers, accumulation, modes
+│   └── ch08/                      # Ch 8  Unicode, UTF-8 bytes, normalization
 ├── configs/                       # TOML experiment configs (<purpose>-cpu.toml, <purpose>-gpu.toml)
 │   ├── counting-cpu.toml          # Ch 2
 │   ├── counting-eval-cpu.toml     # Ch 4
@@ -139,6 +143,7 @@ code/
 ├── data/
 │   ├── tiny/harbor.txt            # Ch 1: 40 original sentences (written for this book)
 │   ├── tiny/harbor_synth.txt      # Ch 4: 3000 generated sentences, 1024 distinct (seed 0)
+│   ├── tiny/multilingual.txt      # Ch 8: 11 lines, 9 scripts + emoji + code (written for this book)
 │   ├── handbook/                  # Ch 33: original Harbor Handbook (planned)
 │   └── downloads/                 # Ch 18: fetched datasets (not committed)
 ├── projects/                      # Capstones: README, scripts, eval sets, checklists
@@ -162,7 +167,7 @@ These signatures are promises. A later chapter may *add* parameters with default
 | Network inspection | Ch 5 | `TinyMLP(in, hidden, out, activation="relu")`; `count_parameters(module, trainable_only=False)`; `format_parameter_table(module)`; `shape_trace(module, *inputs) -> [(name, shape)]` |
 | Basic training | Ch 6 | `train_step(model, inputs, targets, loss_fn, optimizer) -> float`; `evaluate(model, inputs, targets, loss_fn, batch_size=1024) -> {loss, accuracy}`; `fit(model, train_data, validation_data, loss_fn, optimizer, epochs, batch_size, seed=0) -> history` |
 | Character model | Ch 7 | `CharVocabulary.build(text)`, `.encode`, `.decode`; `make_examples(ids, context_size) -> (contexts, targets)`; `CharMLP(CharModelConfig(vocab_size, context_size=8, hidden=128))`; `sample_text(model, vocab, prompt, length, generator=None, greedy=False)`; `save_checkpoint(dir, model, vocab, extra)` / `load_checkpoint(dir, device)` |
-| `Tokenizer` protocol | Ch 8 | `.encode(text) -> list[int]`, `.decode(ids) -> str`, `.vocab_size`, `.save(path)`, `.load(path)` |
+| `Tokenizer` (abstract base class) | Ch 8 | `.encode(text) -> list[int]`, `.decode(ids) -> str`, `.vocab_size`, `.to_dict()`, `.from_dict(data)`, `.round_trips(text)`; files via `save_tokenizer(tok, path)` / `load_tokenizer(path)` (correction: the plan said `.save`/`.load` methods; module functions with a registry were chosen instead) |
 | `GPTConfig` | Ch 12 | dataclass: `vocab_size, context_length, d_model, n_heads, n_layers, dropout, ...` |
 | `GPT.forward` | Ch 16 | `(token_ids[B, T], attention_mask=None, kv_cache=None) -> logits[B, T, vocab_size]` |
 | `generate` | Ch 17 | `generate(model, token_ids, max_new_tokens, decoding=DecodingConfig(), stop_ids=())` |
