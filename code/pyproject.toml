@@ -1,0 +1,36 @@
+# Package metadata and dependencies for the book's companion code.
+# Chapter 2 explains every line. Install from this directory with:
+#   python -m pip install -e ".[dev]"
+# (Install PyTorch first on Linux CPU-only machines; see Chapter 2.3.)
+
+[build-system]
+requires = ["setuptools>=77"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "llmfp"
+version = "0.2.0"
+description = "Companion code for 'Large Language Models From First Principles'"
+readme = "README.md"
+requires-python = ">=3.12"
+# Exact pins: every reader gets the versions the book was tested with.
+dependencies = [
+    "numpy==2.5.3",
+    "torch==2.14.1",
+]
+
+[project.optional-dependencies]
+# Tools for developing and testing, not needed to run the models.
+dev = [
+    "pytest==9.1.1",
+]
+
+[tool.setuptools.packages.find]
+# Only the library is installed. scripts/, solutions/, and tests/ are run in place.
+include = ["llmfp*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+# Put code/ on the import path so tests can import scripts and solutions too.
+pythonpath = ["."]
+addopts = "-ra"

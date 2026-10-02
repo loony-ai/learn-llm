@@ -36,11 +36,14 @@ All commands in the book run from inside `code/`. Scripts are run as modules (`p
 
 ```text
 code/
-├── pyproject.toml                 # (planned, Ch 2) package metadata + pinned dependencies
+├── pyproject.toml                 # Ch 2  package metadata + pinned dependencies
+├── requirements/
+│   └── linux-cpu-lock.txt         # Ch 2  exact versions of every package (Linux, CPU)
+├── .venv/                         # Ch 2  virtual environment (not committed)
 ├── llmfp/                         # The book's package ("LLM From First Principles")
 │   ├── __init__.py                # Ch 1
 │   ├── counting_lm.py             # Ch 1  counting next-word model
-│   ├── config.py                  # Ch 2  load/save dataclass configs (TOML/JSON)
+│   ├── config.py                  # Ch 2  TOML configs, --set overrides, validation, JSON records
 │   ├── devices.py                 # Ch 3  pick_device(), memory helpers
 │   ├── experiment.py              # Ch 4  run directories, seeds, experiment records
 │   ├── splits.py                  # Ch 4  deterministic train/val/test splitting
@@ -83,14 +86,22 @@ code/
 │       ├── app.py, limits.py, monitoring.py
 ├── scripts/                       # One runnable entry point per milestone: chNN_<what>.py
 │   ├── __init__.py
-│   └── ch01_counting_demo.py      # Ch 1
+│   ├── ch01_counting_demo.py      # Ch 1
+│   ├── ch02_check_env.py          # Ch 2  verify interpreter, venv, pinned versions
+│   └── ch02_train_counting.py     # Ch 2  config-driven training of the counting model
 ├── tests/                         # pytest-compatible tests, mirroring llmfp/
 │   ├── test_counting_lm.py        # Ch 1
-│   └── test_ch01_solutions.py     # Ch 1 exercise solutions
+│   ├── test_ch01_solutions.py     # Ch 1 exercise solutions
+│   ├── test_config.py             # Ch 2
+│   └── test_ch02_solutions.py     # Ch 2 exercise solutions
 ├── solutions/                     # Suggested exercise solutions: chNN_<exercise>.py
 │   ├── ch01_backoff.py            # Ch 1, Exercise 5
-│   └── ch01_memorization.py       # Ch 1, Exercise 6
-├── configs/                       # TOML experiment configs (cpu-*.toml, gpu-*.toml)
+│   ├── ch01_memorization.py       # Ch 1, Exercise 6
+│   └── ch02_iter_sentences.py     # Ch 2, Exercise 4
+├── examples/                      # Small standalone teaching programs: examples/chNN/*.py
+│   └── ch02/                      # Ch 2  collections, functions, classes, generators, files, pytest failure demo
+├── configs/                       # TOML experiment configs (<purpose>-cpu.toml, <purpose>-gpu.toml)
+│   └── counting-cpu.toml          # Ch 2
 ├── data/
 │   ├── tiny/harbor.txt            # Ch 1: 40 original sentences (written for this book)
 │   ├── handbook/                  # Ch 33: original Harbor Handbook (planned)
@@ -108,6 +119,8 @@ These signatures are promises. A later chapter may *add* parameters with default
 |---|---|---|
 | `CountingModelConfig` | Ch 1 | `CountingModelConfig(context_size=2, lowercase=True)` |
 | `CountingLanguageModel` | Ch 1 | `.train(lines) -> int`, `.followers_for(words) -> Counter or None`, `.next_word_candidates(prompt, top=5)`, `.generate(prompt, max_new_words=20, rng=None, greedy=False) -> GenerationResult`, `.save(path)`, `.load(path)` |
+| `load_config` | Ch 2 | `load_config(cls, path=None, overrides=None) -> cls`; also `from_dict`, `apply_overrides`, `parse_value`, `to_dict`, `save_json`, `load_json`, `ConfigError` |
+| Script config convention | Ch 2 | `--config <file.toml>`, repeatable `--set key=value`, `--log-level`; resolved config saved as JSON beside outputs |
 | `Tokenizer` protocol | Ch 8 | `.encode(text) -> list[int]`, `.decode(ids) -> str`, `.vocab_size`, `.save(path)`, `.load(path)` |
 | `GPTConfig` | Ch 12 | dataclass: `vocab_size, context_length, d_model, n_heads, n_layers, dropout, ...` |
 | `GPT.forward` | Ch 16 | `(token_ids[B, T], attention_mask=None, kv_cache=None) -> logits[B, T, vocab_size]` |
@@ -120,3 +133,5 @@ These signatures are promises. A later chapter may *add* parameters with default
 - Configs: `configs/<purpose>-<cpu|gpu>.toml`.
 - Runs: `runs/<chapter-or-project>/<run-name>/` containing `config.json`, `record.json`, `checkpoint*`, `log.txt`.
 - Tests: `tests/test_<module>.py`, written with `unittest` in Chapter 1 (no installation required) and with pytest from Chapter 2.
+- Examples: `examples/chNN/<topic>.py`, run with `python examples/chNN/<topic>.py` from `code/`. A file named `test_*.py` in `examples/` is a deliberate demonstration and is not collected by a plain `pytest` run.
+- Environment: all commands from Chapter 2 on assume the `code/.venv` environment is active.

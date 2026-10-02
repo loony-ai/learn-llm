@@ -4,7 +4,7 @@
 
 The ledger is the book's source of truth for what has been delivered, what depends on what, and what must be revisited. Update it with every chapter.
 
-**Last updated:** 2026-10-02, after Chapter 1.
+**Last updated:** 2026-10-02, after Chapter 2.
 
 ### 1. Completed chapters and outstanding sections
 
@@ -12,7 +12,8 @@ The ledger is the book's source of truth for what has been delivered, what depen
 |---|---|---|
 | Planning materials | Done | Learning journey, contents, prerequisite map, repository structure, capstone map, hardware paths, coverage audit, this ledger |
 | 1 What a language model is and what it predicts | Done | All 15 sections, exercises, and answers |
-| 2–45 | Not started | Next: Chapter 2 |
+| 2 Python foundations and your working environment | Done | Sections 2.1–2.13 (2.13 added for recap/exercises), 6 exercises with answers |
+| 3–45 | Not started | Next: Chapter 3 |
 | Appendices A–G | Not started | The glossary will be seeded from the ledger's concept table |
 
 ### 2. Concepts introduced
@@ -46,6 +47,31 @@ Only concepts that have been *delivered* are listed. Planned locations are in th
 | Data sparsity / unseen contexts | 1.11 | Observed: no prediction | Ch 5.1 |
 | Hallucination (informal) | 1.12 | Fluent but false output, observed | Ch 21.9, 38.3 |
 | Anthropomorphic language and its limits | 1.12 | Guidance on "knows/thinks/remembers" | Throughout |
+| Interpreter; `sys.executable` | 2.2 | Several interpreters per machine | 2.12 |
+| Package/distribution, PyPI, pip, wheel | 2.2 | Wheel filename anatomy; install vs import name | Ch 23 (Hub downloads) |
+| site-packages, import path (`sys.path`) | 2.2 | Explains Ch 1's `-m` trick | — |
+| Virtual environment | 2.2, 2.3 | Create, activate, rebuild | Appendix B |
+| Direct/transitive dependency, pinning, lock file | 2.2, 2.3 | Exact pins + Linux CPU lock file | Ch 41.5 (versioning) |
+| PyTorch build variants (CPU, CUDA, MPS); local version label `+cpu` | 2.3 | Install commands per platform | Ch 3.11 (devices), Ch 19.10 |
+| Editable install; extras (`.[dev]`) | 2.3 | — | — |
+| `pyproject.toml` | 2.3 | Every section explained | — |
+| Hash / hashable (informal) | 2.4 | Why tuples can be dict keys | Ch 18.5 (dedup hashing) |
+| Frozen dataclass, `default_factory`, `replace` | 2.4 | Config objects | Ch 12.7 (`GPTConfig`) |
+| Type hints (not enforced) | 2.5 | Demonstrated | 2.9 (runtime validation) |
+| Keyword-only parameters | 2.5 | Book-wide convention for options | — |
+| Mutable default trap | 2.5 | Demonstrated | — |
+| Input/target shift (preview) | 2.5, 2.10 | Example + failing test | Ch 11.3 (formal) |
+| Properties, class methods, dunder methods, inheritance | 2.6 | Vocabulary example | Ch 5.5, Ch 11.8 |
+| `__call__` → `forward` pattern (imitation of PyTorch) | 2.6 | Labeled teaching imitation | Ch 5.5 (real `nn.Module`) |
+| Iterator vs iterable; generator; laziness | 2.7 | Demonstrated | Ch 11.8, Ch 18 |
+| One-shot iterator trap | 2.7 | Linked to Ch 1 backoff `list(lines)` | — |
+| Batching a stream (preview) | 2.7 | `batched` generator | Ch 11.5 |
+| Text vs bytes; encoding; UTF-8 (introductory) | 2.8 | Byte counts, wrong-encoding demo | Ch 8.2–8.3 (full) |
+| JSON vs TOML; `tomllib` read-only | 2.8 | Convention: TOML in, JSON out | — |
+| Configuration layering, overrides, validation | 2.9 | `llmfp/config.py` | Ch 4.7, Ch 19 |
+| Logging levels; print vs log | 2.9 | Used in `ch02_train_counting` | Ch 41.2–41.3 |
+| pytest: discovery, assert introspection, fixtures, parametrize, raises, selection | 2.10 | — | Ch 16.8 (model fixtures) |
+| Exit status | 2.12 | 0 = success convention | Ch 38.5 (CI) |
 
 ### 3. Prerequisites and unresolved dependencies
 
@@ -53,14 +79,25 @@ Only concepts that have been *delivered* are listed. Planned locations are in th
 |---|---|
 | Chapter 1 requires only: Python 3.10+ syntax, running a script from a terminal | Satisfied (stated in 1's prerequisites) |
 | Forward references in 1.13 (tokens, embeddings, neural networks, attention) | Named only as signposts with chapter links; not relied on |
-| `unittest` used in Ch 1 tests before pytest is taught | Explained in 1.10; pytest arrives in 2.10 |
+| `unittest` used in Ch 1 tests before pytest is taught | Explained in 1.10; pytest arrives in 2.10 (resolved) |
+| Ch 2 forward references: Dataset `__getitem__` (Ch 11), `nn.Module` (Ch 5), CI (Ch 38), Appendix B | Named as signposts only; not relied on |
 | None unresolved | — |
 
 ### 4. Repository files and interfaces
 
 | File | Created | Status | Public interface |
 |---|---|---|---|
-| `code/llmfp/__init__.py` | Ch 1 | Tested | `__version__ = "0.1.0"` |
+| `code/llmfp/__init__.py` | Ch 1, updated Ch 2 | Tested | `__version__ = "0.2.0"` (Ch 1 listing shows its own 0.1.0 version inline) |
+| `code/llmfp/config.py` | Ch 2 | Tested (21 tests) | `ConfigError`, `load_toml`, `parse_value`, `apply_overrides`, `from_dict`, `load_config(cls, path=None, overrides=None)`, `to_dict`, `save_json`, `load_json` |
+| `code/pyproject.toml` | Ch 2 | Installed (editable) | Package `llmfp` 0.2.0; pins numpy, torch; extra `dev` pins pytest |
+| `code/requirements/linux-cpu-lock.txt` | Ch 2 | Verified in a second fresh venv | Full `pip freeze` of tested env |
+| `code/configs/counting-cpu.toml` | Ch 2 | Tested (matches dataclass defaults) | — |
+| `code/scripts/ch02_check_env.py` | Ch 2 | Executed inside and outside venv | Exit 0/1; searches site-packages only |
+| `code/scripts/ch02_train_counting.py` | Ch 2 | Executed | `CountingRunConfig`; CLI `--config`, `--set`, `--log-level` |
+| `code/examples/ch02/*.py` | Ch 2 | Executed | Teaching programs; `test_failure_demo.py` fails deliberately |
+| `code/solutions/ch02_iter_sentences.py` | Ch 2 | Tested, executed | `iter_sentences(paths)` |
+| `code/tests/test_config.py` | Ch 2 | 21 tests pass | — |
+| `code/tests/test_ch02_solutions.py` | Ch 2 | 8 tests pass | — |
 | `code/llmfp/counting_lm.py` | Ch 1 | Tested | `START`, `END`, `CountingModelConfig`, `GenerationResult`, `split_into_words`, `join_words`, `rank_followers`, `CountingLanguageModel` (`train`, `context_for`, `followers_for`, `next_word_candidates`, `generate`, `num_parameters`, `num_contexts`, `vocabulary`, `save`, `load`), `read_lines` |
 | `code/scripts/__init__.py` | Ch 1 | — | Makes `scripts` importable as a package |
 | `code/scripts/ch01_counting_demo.py` | Ch 1 | Executed | CLI: `--data --context-size --prompt --samples --max-new-words --seed --checkpoint` |
@@ -69,7 +106,7 @@ Only concepts that have been *delivered* are listed. Planned locations are in th
 | `code/solutions/ch01_backoff.py` | Ch 1 | Tested, executed | `BackoffLanguageModel(config)`; `.last_context_size_used` |
 | `code/solutions/ch01_memorization.py` | Ch 1 | Executed | CLI: `--data --samples --max-context-size --seed` |
 | `code/README.md` | Ch 1 | — | How to run code |
-| `tools/build_book.py` | Ch 1 | Executed | Expands `@@FILE@@` and `@@RUN@@` markers in `*.src.md` |
+| `tools/build_book.py` | Ch 1, updated Ch 2 | Executed | Expands `@@FILE@@` and `@@RUN@@` markers in `*.src.md`; RUN uses `code/.venv` when present and captures stderr; `|| true` marks expected failures |
 | `code/data/tiny/harbor.txt` | Ch 1 | — | 40 original sentences, written for this book (no third-party license) |
 
 ### 5. Dependency versions
@@ -77,9 +114,11 @@ Only concepts that have been *delivered* are listed. Planned locations are in th
 | Dependency | Needed from | Version used in testing | Latest on PyPI (checked 2026-10-02) | Pin status |
 |---|---|---|---|---|
 | Python | Ch 1 | 3.14.4 | — | Book requires 3.12+ (decided; see note) |
-| NumPy | Ch 3 | 2.5.1 (installed) | 2.5.3 (requires Python 3.12+) | To pin in Ch 2 |
-| PyTorch (`torch`) | Ch 3 | 2.13.0+cpu (installed) | 2.14.1 | To pin in Ch 2 after testing |
-| pytest | Ch 2 (Ch 1 tests also pass under it) | 9.1.1 | 9.1.1 | To pin in Ch 2 |
+| NumPy | Ch 3 | 2.5.3 (venv) | 2.5.3 (requires Python 3.12+) | **Pinned** `==2.5.3` (Ch 2) |
+| PyTorch (`torch`) | Ch 3 | 2.14.1+cpu (venv, CPU index) | 2.14.1 | **Pinned** `==2.14.1` (Ch 2). CPU index wheels exist for cp312–cp314; CUDA variants cu126/cu130/cu132 (checked 2026-10-02, untested) |
+| pytest | Ch 2 | 9.1.1 | 9.1.1 | **Pinned** `==9.1.1` in `dev` extra (Ch 2) |
+| setuptools (build only) | Ch 2 | 78.1.0 | — | `>=77` in `[build-system]` |
+| Transitive (torch deps etc.) | Ch 2 | See `requirements/linux-cpu-lock.txt` | — | Locked for Linux CPU |
 | transformers | Ch 23 | — | 5.18.0 | Verify APIs in Ch 23 |
 | tokenizers | Ch 9.8 | — | 0.23.2 | Verify in Ch 9 |
 | datasets | Ch 18 | — | 5.0.1 | Verify in Ch 18 |
@@ -103,6 +142,13 @@ Note: Chapter 1 code was written to need only Python 3.10+ features, but it was 
 | Ch 1 demo, default | `python3 -m scripts.ch01_counting_demo` | Output pasted in 1.10 as observed | 2026-10-02 |
 | Ch 1 demo, context sizes 1 and 3, unseen prompt, Exercise 1 and 3 prompts | See 1.11, 1.15 | Output pasted (abridged) as observed | 2026-10-02 |
 | Ch 1 Exercise 7 (character-level) | Throwaway experiment in scratch space, not in repository | Numbers quoted in answers, labeled as the author's run | 2026-10-02 |
+| Ch 2 venv install (Linux CPU) | `python3 -m venv .venv`; torch from CPU index (~48 s); `pip install -e ".[dev]"` | Success; torch stayed `2.14.1+cpu` | 2026-10-02 |
+| Ch 2 lock-file install | Fresh venv; `pip install -r requirements/linux-cpu-lock.txt`; `pip install --no-deps -e .` | Identical `pip freeze`; 43 tests passed (at that point) | 2026-10-02 |
+| Ch 2 full test suite | `pytest` | 51 passed (18 + 4 Ch 1, 21 config, 8 Ch 2 solutions) | 2026-10-02 |
+| Ch 2 bug-catching test | Removed `list(lines)` from backoff; ran `pytest tests/test_ch02_solutions.py`; restored | 1 failed, 7 passed, as intended | 2026-10-02 |
+| Ch 2 scripts, examples, error cases | Via `@@RUN@@` markers in chapter build | Output inserted as observed | 2026-10-02 |
+| Ch 1 + Ch 2 build | `python3 tools/build_book.py` | All markers expanded; prose scan found no math symbols; all relative links resolve | 2026-10-02 |
+| macOS, Windows, GPU install commands | — | **Not executed** (stated in 2.3) | — |
 
 ### 7. Teaching simplifications to revisit
 
@@ -117,6 +163,9 @@ Note: Chapter 1 code was written to need only Python 3.10+ features, but it was 
 | Context is a fixed number of previous words; exact match required | 1.11 | Ch 5, 7: generalization; Ch 13: attention over a long window |
 | Random sampling in proportion to counts | 1.7, 1.8 | Ch 21: temperature, top-k, top-p |
 | "Copy of a training sentence" checked by exact string match | 1.10 | Ch 18.5, 37.4: near-duplicates and contamination |
+| Runs overwrite each other in `runs/ch02/` | 2.11 | Ch 4.8: one directory per run, environment capture |
+| Config type checks cover only int/float/str/bool/nested dataclasses | 2.9 | Extend if later configs need lists or optional values |
+| UTF-8 explained only at the level of byte counts | 2.8 | Ch 8.2–8.3 |
 
 ### 8. Open questions and decisions
 
@@ -128,4 +177,6 @@ Note: Chapter 1 code was written to need only Python 3.10+ features, but it was 
 | Small instruction models for Parts 5–7 | Candidates (Hub lists Apache-2.0, checked 2026-10-02): `HuggingFaceTB/SmolLM2-135M-Instruct`, `HuggingFaceTB/SmolLM2-360M-Instruct`, `Qwen/Qwen2.5-0.5B-Instruct`. Chosen by measurement in Ch 24 |
 | Embedding model for Ch 32 | Candidate: `sentence-transformers/all-MiniLM-L6-v2` (Hub lists Apache-2.0, checked 2026-10-02) |
 | Serving framework for Ch 40 | Open; decide and verify in Ch 40 |
-| Config file format | TOML for hand-written configs (read with the standard library's `tomllib`), JSON for machine-written records |
+| Config file format | **Decided and implemented (Ch 2):** TOML for hand-written configs, JSON for machine-written records |
+| Environment tool | **Decided (Ch 2):** `venv` + `pip`; other tools mentioned as alternatives |
+| `GenerationConfig` location | Exercise 5 suggests keeping it in the script until Ch 17 needs it; revisit in Ch 17 |

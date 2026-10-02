@@ -4,8 +4,9 @@ Chapter sources are `book/**/*.src.md`. Each is expanded into the `.md` file nex
 to it (the file readers open). Two markers are supported, each on a line by itself:
 
     @@FILE <path relative to repo root>@@   -> replaced by that file's contents
-    @@RUN <shell command>@@                 -> replaced by the command's stdout,
-                                               run from code/ with python3
+    @@RUN <shell command>@@                 -> replaced by the command's stdout and
+                                               stderr, run from code/. If code/.venv
+                                               exists (Chapter 2), its python is used.
 
 Run from the repository root:
     python3 tools/build_book.py            # build every chapter
@@ -14,6 +15,7 @@ Run from the repository root:
 
 from __future__ import annotations
 
+import os
 import re
 import subprocess
 import sys
@@ -21,6 +23,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 CODE_DIR = ROOT / "code"
+VENV_BIN = CODE_DIR / ".venv" / ("Scripts" if os.name == "nt" else "bin")
 MARKER = re.compile(r"^@@(FILE|RUN) (.+)@@$", re.MULTILINE)
 
 
@@ -28,11 +31,17 @@ def expand(match: re.Match[str]) -> str:
     kind, argument = match.group(1), match.group(2).strip()
     if kind == "FILE":
         return (ROOT / argument).read_text(encoding="utf-8").rstrip("\n")
+    env = dict(os.environ)
+    if VENV_BIN.is_dir():
+        env["PATH"] = str(VENV_BIN) + os.pathsep + env["PATH"]
+        env["VIRTUAL_ENV"] = str(VENV_BIN.parent)
+    # A trailing "|| true" in the command documents an expected failure.
     result = subprocess.run(
-        argument, shell=True, cwd=CODE_DIR, capture_output=True, text=True, check=False
+        argument, shell=True, cwd=CODE_DIR, env=env, text=True, check=False,
+        stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
     )
     if result.returncode != 0:
-        raise SystemExit(f"Command failed ({result.returncode}): {argument}\n{result.stderr}")
+        raise SystemExit(f"Command failed ({result.returncode}): {argument}\n{result.stdout}")
     return result.stdout.rstrip("\n")
 
 

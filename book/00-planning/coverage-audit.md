@@ -49,17 +49,17 @@ Each required topic from the book specification and the section that covers it. 
 | Training, inference, pretraining, fine-tuning, adaptation | 1.5 | ✓ |
 | What a language model predicts | 1.6–1.7 | ✓ |
 | Why next-token prediction can produce useful capabilities; what it does not prove | 1.12 | ✓ |
-| Python: collections, functions, classes, iterators, generators, files, environments, packages | 2.2–2.9 | |
+| Python: collections, functions, classes, iterators, generators, files, environments, packages | 2.2–2.9 | ✓ |
 | NumPy and PyTorch prerequisites | Chapter 3 | |
 | Tensors: shapes, dimensions, axes, dtypes, devices, indexing, slicing, reshaping, broadcasting, batching | 3.3–3.11 | |
 | CPU, GPU, RAM, VRAM, hardware constraints | 3.11–3.12 | |
-| Reproducibility, seeds, configuration, experiment records | 4.6–4.8 | |
+| Reproducibility, seeds, configuration, experiment records | 2.9 (configuration), 4.6–4.8 | Partial: configuration done in Ch 2 |
 | Datasets, examples, labels, splits, leakage, overfitting | 4.2–4.5 | |
 | Neural networks through behavior and code | Chapter 5 | |
 | Forward pass, loss, backward pass, autodiff, gradients, optimizers, learning rates, training loops | Chapter 6 | |
 | Gradient accumulation vs accidental accumulation | 6.8 | |
 | Evaluation mode, training mode, disabling gradient tracking | 6.9 | |
-| Runnable environment and tiny first training project before transformers | Chapters 2, 7 | Partial: Ch 1 runs with standard-library Python |
+| Runnable environment and tiny first training project before transformers | Chapters 2, 7 | Partial: environment done (Ch 2); training project in Ch 7 |
 
 #### Parts 2–9
 

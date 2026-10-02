@@ -19,7 +19,7 @@ The full table of contents, with every numbered section, is in [table-of-content
 
 | Part | Chapters | Status |
 |---|---|---|
-| **Part 1: Foundations beginner books often skip** | [1 What a language model is and what it predicts](book/part-1-foundations/ch01-what-a-language-model-predicts.md) · 2 Python foundations and your environment · 3 Tensors · 4 Data, experiments, reproducibility · 5 Neural networks through behavior and code · 6 How training works · 7 Project 0: your first trained model | Ch 1 written |
+| **Part 1: Foundations beginner books often skip** | [1 What a language model is and what it predicts](book/part-1-foundations/ch01-what-a-language-model-predicts.md) · [2 Python foundations and your environment](book/part-1-foundations/ch02-python-foundations-and-environment.md) · 3 Tensors · 4 Data, experiments, reproducibility · 5 Neural networks through behavior and code · 6 How training works · 7 Project 0: your first trained model | Ch 1–2 written |
 | **Part 2: Turning text into model inputs** | 8 Text, Unicode, bytes, tokens · 9 Byte-pair encoding (Project 1) · 10 Embeddings and position · 11 Sequences, batches, targets | Planned |
 | **Part 3: Building a decoder-only transformer** | 12 Architecture tour · 13 Attention from scratch · 14 Multi-head attention · 15 Completing the block · 16 Assembling a GPT-style model (Project 2) · 17 Generation and KV caching | Planned |
 | **Part 4: Training and generating text** | 18 Pretraining data · 19 The pretraining loop · 20 Debugging training · 21 Decoding and honest expectations (Project 3) | Planned |

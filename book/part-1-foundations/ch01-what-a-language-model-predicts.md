@@ -1,6 +1,6 @@
 ## Chapter 1: What a Language Model Is and What It Predicts
 
-[Back to index](../../README.md) · Next: Chapter 2 (planned)
+[Back to index](../../README.md) · Next: [Chapter 2](ch02-python-foundations-and-environment.md)
 
 You type a question into a chatbot, and an answer appears a few words at a time. Before you can build, adapt, or debug a system like that, you need a precise picture of what the underlying model actually does. That picture is smaller and more mechanical than the marketing suggests, and more surprising than skeptics allow.
 
@@ -259,7 +259,7 @@ A **token** is the unit of text a model reads and predicts. In this chapter, a t
 
 The **context** is the part of the input that the model actually uses to make its prediction. The counting model uses only the last few tokens; with `context_size=2`, the input `"at dusk the keeper"` has the context `("the", "keeper")`, and the words before that have no effect. LLMs use a much longer context, up to a limit called the *context window*, which ranges from thousands to hundreds of thousands of tokens in current models (Chapter 11 defines it precisely).
 
-The **output** is a set of scores for candidate next tokens. For the counting model, the score is simply how many times each candidate followed this context in the training text. Here is real output from the model you will build, for the input `"the keeper"`:
+The **output** is a set of scores for candidate next tokens. For the counting model, the score is how many times each candidate followed this context in the training text. Here is real output from the model you will build, for the input `"the keeper"`:
 
 ```text
 Next-word candidates (seen N times out of all continuations of this context):
@@ -389,7 +389,7 @@ Forty sentences is absurdly small for a language model. That is deliberate: smal
 
 #### The model
 
-File: [`code/llmfp/__init__.py`](../../code/llmfp/__init__.py)
+File: [`code/llmfp/__init__.py`](../../code/llmfp/__init__.py) (as of Chapter 1; [Chapter 2](ch02-python-foundations-and-environment.md) updates the docstring and version)
 
 ```python
 """llmfp: companion code for "Large Language Models From First Principles".
@@ -1009,7 +1009,7 @@ Ran 22 tests in 0.004s
 OK
 ```
 
-The count is 22 because the repository also contains tests for the exercise solutions (section 1.15). If you typed only the files in section 1.8, you will see `Ran 18 tests`. Any `FAIL` or `ERROR` line means something differs from the listing; section 1.14 covers the common causes.
+The count is 22 because the repository also contains tests for the exercise solutions (section 1.15). If you typed only the files in section 1.8, you will see `Ran 18 tests`. From Chapter 2 on, the book's tests are written for pytest; `unittest` does not collect those, so it keeps reporting 22 while `pytest` reports more. Any `FAIL` or `ERROR` line means something differs from the listing; section 1.14 covers the common causes.
 
 #### Running the demonstration
 
@@ -1434,4 +1434,4 @@ You can now:
 - Design a small controlled experiment (change one hyperparameter, hold everything else fixed, measure) and interpret its results.
 - Recognize repetition, memorization, unseen-context failure, and fluent falsehood when you see them, and name the parts of the book that address each.
 
-**Next:** Chapter 2 turns this directory into a properly installed, tested Python package with pinned dependencies, and fills in the Python you will need for the rest of the book.
+**Next:** [Chapter 2](ch02-python-foundations-and-environment.md) turns this directory into a properly installed, tested Python package with pinned dependencies, and fills in the Python you will need for the rest of the book.

@@ -28,7 +28,7 @@ File: [ch01-what-a-language-model-predicts.md](../part-1-foundations/ch01-what-a
 - 1.15 Recap, concept checks, exercises, answers, checkpoint
 
 #### Chapter 2: Python Foundations and Your Working Environment
-Code: `code/pyproject.toml`, `code/llmfp/config.py`
+File: [ch02-python-foundations-and-environment.md](../part-1-foundations/ch02-python-foundations-and-environment.md) · Code: `code/pyproject.toml`, `code/llmfp/config.py`, `code/scripts/ch02_*.py`, `code/examples/ch02/`
 
 - 2.1 The problem: code that runs today and next month, on your machine and another
 - 2.2 Interpreters, virtual environments, packages, and pinned dependencies
@@ -38,10 +38,11 @@ Code: `code/pyproject.toml`, `code/llmfp/config.py`
 - 2.6 Classes, methods, properties, and `__call__` (preparing for PyTorch modules)
 - 2.7 Iterators and generators: processing data lazily
 - 2.8 Files, paths, text encodings, JSON, and TOML
-- 2.9 Command-line scripts with `argparse`, and logging instead of `print`
+- 2.9 Command-line scripts, configuration, and logging
 - 2.10 Writing tests with pytest: fixtures, parametrization, temporary files
 - 2.11 Milestone: the Chapter 1 model as an installed, tested package
 - 2.12 Common environment errors and how to diagnose them
+- 2.13 Recap, concept checks, exercises, answers, checkpoint
 
 #### Chapter 3: Tensors: NumPy and PyTorch as Containers of Numbers
 Code: `code/llmfp/devices.py`, `code/scripts/ch03_tensor_tour.py`
